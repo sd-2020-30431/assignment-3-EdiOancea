@@ -1,13 +1,11 @@
 import App from './app'
-
 import * as bodyParser from 'body-parser';
-
-import DemoController from './controllers/demo/demo.controller';
+import UserController from './controllers/User';
 
 const app = new App({
   port: 5000,
   controllers: [
-    new DemoController(),
+    new UserController(),
   ],
   middleWares: [
     bodyParser.json(),
