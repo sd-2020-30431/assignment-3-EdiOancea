@@ -7,23 +7,25 @@ class App {
 
   constructor(appInit: {
     port: number;
-    middleWares: any;
-    controllers: any;
+    frontMiddlewares: [any];
+    backMiddlewares: [any];
+    controllers: [any];
   }) {
     this.app = express();
     this.port = appInit.port;
 
-    this.middlewares(appInit.middleWares);
-    this.routes(appInit.controllers);
+    this.useMiddlewares(appInit.frontMiddlewares);
+    this.useRoutes(appInit.controllers);
+    this.useMiddlewares(appInit.backMiddlewares);
   }
 
-  private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
+  private useMiddlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
     middleWares.forEach(middleWare => {
       this.app.use(middleWare)
     })
   }
 
-  private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
+  private useRoutes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
     controllers.forEach(controller => {
       this.app.use('/', controller.router)
     })
