@@ -1,59 +1,53 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 
-import User from '../models/User';
-import IControllerBase from '../interfaces/IControllerBase';
+import HttpError from '../services/HttpError';
+import UserService from '../services/User';
+import wrapError from '../services/WrapError';
+import IBaseController from '../interfaces/IBaseController';
 
-class UserController implements IControllerBase {
-  public path = '/';
-  public pathId = '/:id';
-  public router = express.Router();
+class UserController implements IBaseController {
+  path = '/';
+  pathOne = '/:id';
+  router = express.Router();
+  service;
 
   constructor() {
     this.initRoutes();
+    this.service = new UserService();
   }
 
-  public initRoutes() {
+  initRoutes() {
     this.router
-      .post(this.path, this.create)
-      .get(this.path, this.getAll)
-      .get(this.pathId, this.get)
-      .put(this.pathId, this.update)
-      .delete(this.pathId, this.delete);
+      .post(this.path, wrapError(this.create))
+      .get(this.path, wrapError(this.getAll))
+      .get(this.pathOne, wrapError(this.get))
+      .put(this.pathOne, wrapError(this.update))
+      .delete(this.pathOne, wrapError(this.delete));
   }
 
-  async create(req: Request, res: Response) {
-    const { email } = req.body;
-    const user = await User.create({ email });
+  create = async (req: Request, res: Response) => {
+    const { body } = req;
 
-    res.json(user);
+    res.json(await this.service.create(body));
   }
 
-  async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    const user = await User.destroy({ where: { id } });
-
-    res.json(user);
-  }
-
-  async update(req: Request, res: Response) {
-    const { id } = req.params;
-    const { email } = req.body;
-
-    res.json(await User.update(
-      { email },
-      { where: { id } },
-    ));
-  }
-
-  async get(req: Request, res: Response) {
+  get = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    res.json(await User.findOne({ where: { id } }));
+    res.json(await this.service.readOne(id));
   }
 
-  async getAll(req: Request, res: Response) {
-    res.json(await User.findAll());
+  getAll = async (req: Request, res: Response) => {
+    res.json(await this.service.readAll());
+  }
+
+  delete = async (req: Request, res: Response) => {
+    throw new HttpError(403, 'Not yet pal');
+  }
+
+  update = async (req: Request, res: Response) => {
+    throw new HttpError(403, 'Not yet pal');
   }
 }
 
