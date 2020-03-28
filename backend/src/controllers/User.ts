@@ -30,7 +30,7 @@ class UserController {
   }
 
   protected get = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { params: { id } } = req;
 
     res.json(await this.service.readOne(id));
   }
@@ -40,15 +40,15 @@ class UserController {
   }
 
   protected delete = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { params: { id } } = req;
 
     res.json(await this.service.delete(id))
   }
 
   protected update = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { params: { id }, body } = req.params;
 
-    res.json(await this.service.update(id, req.body));
+    res.json(await this.service.update({ ...body, id }));
   }
 }
 

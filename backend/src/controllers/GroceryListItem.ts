@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 
 class GroceryListItemController {
   public router;
-  protected path = '/groceries/';
-  protected pathOne = '/groceries/:id';
-  protected service;
-  protected wrapError;
+  private path = '/groceries/';
+  private pathOne = '/groceries/:id';
+  private service;
+  private wrapError;
 
   constructor(service, router, wrapError) {
     this.service = service;
@@ -14,7 +14,7 @@ class GroceryListItemController {
     this.initRoutes();
   }
 
-  protected initRoutes() {
+  private initRoutes() {
     this.router
       .post(this.path, this.wrapError(this.create))
       .get(this.path, this.wrapError(this.getAll))
@@ -23,33 +23,32 @@ class GroceryListItemController {
       .delete(this.pathOne, this.wrapError(this.delete));
   }
 
-  protected create = async (req: Request, res: Response) => {
+  private create = async (req: Request, res: Response) => {
     const { body } = req;
-    const userId = 1; // TODO: do this part
 
-    res.json(await this.service.create({ ...body, userId }));
+    res.json(await this.service.create(body));
   }
 
-  protected get = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  private get = async (req: Request, res: Response) => {
+    const { params: { id } } = req;
 
     res.json(await this.service.readOne(id));
   }
 
-  protected getAll = async (req: Request, res: Response) => {
+  private getAll = async (req: Request, res: Response) => {
     res.json(await this.service.readAll());
   }
 
-  protected delete = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  private delete = async (req: Request, res: Response) => {
+    const { params: { id }  } = req;
 
     res.json(await this.service.delete(id))
   }
 
-  protected update = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  private update = async (req: Request, res: Response) => {
+    const { params: { id }, body } = req;
 
-    res.json(await this.service.update(id, req.body));
+    res.json(await this.service.update({ ...body, id }));
   }
 }
 

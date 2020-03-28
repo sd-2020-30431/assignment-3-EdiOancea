@@ -7,7 +7,7 @@ const connection = (db, Sequelize, sequelize) => {
   }), {});
 
   Object.keys(db).forEach(modelName => {
-    const { associate, model } = db[modelName];
+    const { associate } = db[modelName];
 
     if (typeof associate === 'function') {
       associate(dbWithoutAssoc);
