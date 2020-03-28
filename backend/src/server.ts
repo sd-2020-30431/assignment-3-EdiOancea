@@ -1,19 +1,5 @@
-import App from './app'
-import * as bodyParser from 'body-parser';
-import UserController from './controllers/User';
-import ErrorMiddleware from './middlewares/Error';
+import DIContainer from './DIContainer';
 
-const app = new App({
-  port: 5000,
-  controllers: [
-    new UserController(),
-  ],
-  frontMiddlewares: [
-    bodyParser.json(),
-  ],
-  backMiddlewares: [
-    ErrorMiddleware,
-  ],
-});
+const app = DIContainer.container.App;
 
 app.listen();

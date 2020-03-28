@@ -1,41 +1,53 @@
-import * as express from 'express';
 import { Application } from 'express';
 
 class App {
-  public app: Application;
-  public port: number;
+  private app: Application;
+  private port: number;
+  private frontMiddlewares;
+  private controllers;
+  private backMiddlewares;
 
-  constructor(appInit: {
-    port: number;
-    frontMiddlewares: [any];
-    backMiddlewares: [any];
-    controllers: [any];
-  }) {
-    this.app = express();
-    this.port = appInit.port;
+  constructor(
+    express: Application,
+    port: number,
+    frontMiddlewares: [any],
+    controllers: [any],
+    backMiddlewares: [any],
+  ) {
+    this.app = express;
+    this.port = port;
 
-    this.useMiddlewares(appInit.frontMiddlewares);
-    this.useRoutes(appInit.controllers);
-    this.useMiddlewares(appInit.backMiddlewares);
+    this.frontMiddlewares = frontMiddlewares;
+    this.controllers = controllers;
+    this.backMiddlewares = backMiddlewares;
+    this.useFrontMiddlewares();
+    this.useRoutes();
+    this.useBackMiddlewares();
   }
 
-  private useMiddlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
-    middleWares.forEach(middleWare => {
-      this.app.use(middleWare)
-    })
+  private useFrontMiddlewares() {
+    this.frontMiddlewares.forEach(middleWare => {
+      this.app.use(middleWare);
+    });
   }
 
-  private useRoutes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
-    controllers.forEach(controller => {
+  private useRoutes() {
+    this.controllers.forEach(controller => {
       this.app.use('/', controller.router)
     })
   }
 
+  private useBackMiddlewares() {
+    this.backMiddlewares.forEach(middleWare => {
+      this.app.use(middleWare);
+    });
+  }
+
   public listen() {
     this.app.listen(this.port, () => {
-      console.log(`App listening on the http://localhost:${this.port}`)
-    })
+      console.log(`App listening on the http://localhost:${this.port}`);
+    });
   }
 }
 
-export default App
+export default App;

@@ -1,17 +1,23 @@
 import IBaseService from '../interfaces/IBaseService';
-import User from '../models/User';
-import AuthService from './Auth';
 
 class UserService implements IBaseService {
   private exclude = ['password'];
+  private model;
+  private authService;
+  private error
+
+  constructor(model, authService, HttpError) {
+    this.model = model;
+    this.authService = authService;
+    this.error = HttpError;
+  }
 
   async create(body: { email: string; password: string }) {
     const { email, password } = body;
-    const auth = new AuthService(password, '');
-    const hash = auth.generateHash();
-    const { id } = await User.create({ email, password: hash });
+    const hash = this.authService.generateHash(password);
+    const { id } = await this.model.create({ email, password: hash });
 
-    return await User.findOne({
+    return await this.model.findOne({
       where: {
         id,
       },
@@ -22,7 +28,7 @@ class UserService implements IBaseService {
   }
 
   async readOne(id: number) {
-    return await User.findOne({
+    return await this.model.findOne({
       where: {
         id,
       },
@@ -33,16 +39,20 @@ class UserService implements IBaseService {
   }
 
   async readAll() {
-    return await User.findAll({
+    return await this.model.findAll({
       attributes: {
         exclude: this.exclude,
       },
     });
   }
 
-  async update(id: number, body: { email: string; password: string }) {}
+  async update(id: number, body: { email: string; password: string }) {
+    throw this.error;
+  }
 
-  async delete(id: number) {}
+  async delete(id: number) {
+    throw this.error;
+  }
 };
 
 export default UserService;

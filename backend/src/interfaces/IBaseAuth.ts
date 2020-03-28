@@ -1,10 +1,5 @@
 interface IBaseAuth {
-  saltRounds: number;
-  password: string;
-  hash: string;
-
-  generateHash(): string;
-  compare(): boolean;
+  generateHash(string): string;
 }
 
 export default IBaseAuth;
