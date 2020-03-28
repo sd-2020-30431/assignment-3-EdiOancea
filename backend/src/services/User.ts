@@ -2,25 +2,23 @@ import IBaseService from '../interfaces/IBaseService';
 
 class UserService implements IBaseService {
   private exclude = ['password'];
-  private model;
+  private database;
   private authService;
   private error
 
-  constructor(model, authService, HttpError) {
-    this.model = model;
+  constructor(database, authService, HttpError) {
+    this.database = database;
     this.authService = authService;
     this.error = HttpError;
   }
 
   async create(body: { email: string; password: string }) {
+    const { User } = this.database;
     const { email, password } = body;
     const hash = this.authService.generateHash(password);
-    const { id } = await this.model.create({ email, password: hash });
+    const { id } = await User.create({ email, password: hash });
 
-    return await this.model.findOne({
-      where: {
-        id,
-      },
+    return await User.findByPk(id, {
       attributes: {
         exclude: this.exclude,
       },
@@ -28,10 +26,9 @@ class UserService implements IBaseService {
   }
 
   async readOne(id: number) {
-    return await this.model.findOne({
-      where: {
-        id,
-      },
+    const { User } = this.database;
+
+    return await User.findByPk(id, {
       attributes: {
         exclude: this.exclude,
       },
@@ -39,10 +36,13 @@ class UserService implements IBaseService {
   }
 
   async readAll() {
-    return await this.model.findAll({
+    const { User } = this.database;
+
+    return await User.findAll({
       attributes: {
         exclude: this.exclude,
       },
+      include: 'groceryListItems',
     });
   }
 
