@@ -1,36 +1,36 @@
-import { Model, DataTypes } from 'sequelize';
+const UserModel = (sequelize, Model, DataTypes) => {
+  class User extends Model {
+    public id!: number;
+    public email!: string;
+    public password!: string;
 
-import sequelize from '../connection/Connection';
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+  };
 
-class User extends Model {
-  public id!: number;
-  public email!: string;
-  public password!: string;
+  User.init({
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING(128),
+      unique: true,
+      validate: {
+        isEmail: true,
+        notEmpty: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING(128),
+    }
+  }, {
+    tableName: 'users',
+    sequelize: sequelize,
+  });
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  return User;
 };
 
-User.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  email: {
-    type: DataTypes.STRING(128),
-    unique: true,
-    validate: {
-      isEmail: true,
-      notEmpty: true,
-    },
-  },
-  password: {
-    type: DataTypes.STRING(128),
-  }
-}, {
-  tableName: 'users',
-  sequelize: sequelize,
-});
-
-export default User;
+export default UserModel;

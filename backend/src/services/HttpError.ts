@@ -1,6 +1,8 @@
-class HttpError extends Error {
-  status: number;
-  message: string;
+import IHttpError from '../interfaces/IHttpError';
+
+class HttpError extends Error implements IHttpError {
+  public status: number;
+  public message: string;
 
   constructor(status: number, message: string) {
     super();
