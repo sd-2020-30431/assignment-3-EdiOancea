@@ -1,4 +1,6 @@
-const UserModel = (sequelize, Model, DataTypes) => {
+import { Model, DataTypes, Sequelize } from 'sequelize';
+
+const UserModelFactory = (sequelize: Sequelize) => {
   class User extends Model {
     public id!: number;
     public email!: string;
@@ -24,13 +26,29 @@ const UserModel = (sequelize, Model, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING(128),
-    }
+    },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'users',
     sequelize: sequelize,
   });
 
-  return User;
+  const associate = ({ GroceryListItem }) => {
+    User.hasMany(GroceryListItem, {
+      sourceKey: 'id',
+      foreignKey: 'userId',
+      as: 'groceryListItems',
+    });
+  };
+
+  return { model: User, associate };
 };
 
-export default UserModel;
+export default UserModelFactory;

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-class UserController {
+class GroceryListItemController {
   public router;
-  protected path = '/users/';
-  protected pathOne = '/users/:id/';
+  protected path = '/groceries/';
+  protected pathOne = '/groceries/:id';
   protected service;
   protected wrapError;
 
@@ -25,8 +25,9 @@ class UserController {
 
   protected create = async (req: Request, res: Response) => {
     const { body } = req;
+    const userId = 1; // TODO: do this part
 
-    res.json(await this.service.create(body));
+    res.json(await this.service.create({ ...body, userId }));
   }
 
   protected get = async (req: Request, res: Response) => {
@@ -52,4 +53,4 @@ class UserController {
   }
 }
 
-export default UserController
+export default GroceryListItemController

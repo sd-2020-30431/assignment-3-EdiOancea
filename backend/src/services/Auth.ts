@@ -8,7 +8,7 @@ class Auth implements IBaseAuth {
     this.bcrypt = bcrypt;
   }
 
-  public generateHash(password) {
+  public generateHash(password: string): string {
     return this.bcrypt.hashSync(password, this.saltRounds);
   }
 }

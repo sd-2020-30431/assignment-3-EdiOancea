@@ -10,9 +10,9 @@ class App {
   constructor(
     express: Application,
     port: number,
-    frontMiddlewares: [any],
-    controllers: [any],
-    backMiddlewares: [any],
+    frontMiddlewares: any[],
+    controllers: any[],
+    backMiddlewares: any[],
   ) {
     this.app = express;
     this.port = port;
