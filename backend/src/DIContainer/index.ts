@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize';
 import * as bcrypt from 'bcrypt';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as jwt from 'jsonwebtoken';
 const Bottle = require('bottlejs');
 
 import App from '../app';
@@ -9,11 +10,14 @@ import connection from '../connection';
 import UserModelFactory from '../models/User';
 import GroceryListItemModelFactory from '../models/GroceryListItem';
 
+import AuthController from '../controllers/Auth';
 import UserController from '../controllers/User';
 import GroceryListItemController from '../controllers/GroceryListItem';
+import TokenService from '../services/Token';
+import AuthService from '../services/Auth';
 import UserService from '../services/User';
 import GroceryListItemService from '../services/GroceryListItem';
-import AuthService from '../services/Auth';
+import EncryptionService from '../services/Encryption';
 import wrapError from '../services/WrapError';
 import HttpError from '../services/HttpError';
 
@@ -26,7 +30,7 @@ bottle.factory('express', () => express);
 bottle.factory('wrapError', () => wrapError);
 bottle.factory('Sequelize', () => Sequelize);
 bottle.factory('ExpressRouter', ({ express }) => express.Router());
-
+bottle.factory('jwt', () => jwt);
 bottle.factory('sequelize', () => new Sequelize(
   'wasteless',
   'algotech',
@@ -53,9 +57,12 @@ bottle.factory('database', ({
 ));
 
 bottle.factory('UserHttpError', () => new HttpError(403, 'Not yet pal'));
-bottle.service('AuthService', AuthService, 'bcrypt');
-bottle.service('UserService', UserService, 'database', 'AuthService', 'UserHttpError');
+bottle.service('TokenService', TokenService, 'jwt')
+bottle.service('EncryptionService', EncryptionService, 'bcrypt');
+bottle.service('AuthService', AuthService, 'database', 'EncryptionService', 'TokenService');
+bottle.service('UserService', UserService, 'database', 'EncryptionService', 'UserHttpError');
 bottle.service('GroceryListItemService', GroceryListItemService, 'database');
+bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter', 'wrapError');
 bottle.service(
   'GroceryListItemController',
   GroceryListItemController,
@@ -73,6 +80,7 @@ bottle.service(
 
 bottle.factory('App', ({
   express,
+  AuthController,
   UserController,
   GroceryListItemController,
 }) => new App(
@@ -80,6 +88,7 @@ bottle.factory('App', ({
   5000,
   [bodyParser.json()],
   [
+    AuthController,
     UserController,
     GroceryListItemController,
   ],

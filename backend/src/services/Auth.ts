@@ -1,16 +1,32 @@
-import IBaseAuth from '../interfaces/IBaseAuth';
+class AuthService {
+  private exclude = ['password'];
+  private database;
+  private encryptionService;
+  private tokenService;
 
-class Auth implements IBaseAuth {
-  private saltRounds = 10;
-  private bcrypt;
-
-  constructor(bcrypt) {
-    this.bcrypt = bcrypt;
+  constructor(database, encryptionService, tokenService) {
+    this.database = database;
+    this.encryptionService = encryptionService;
+    this.tokenService = tokenService;
   }
 
-  public generateHash(password: string): string {
-    return this.bcrypt.hashSync(password, this.saltRounds);
-  }
-}
+  async auth(body: { email: string; password: string }) {
+    const { User } = this.database;
+    const { email, password } = body;
+    const { password: hash, id } = await User.findOne({
+      where: {
+        email,
+      },
+    });
 
-export default Auth;
+    if (this.encryptionService.compare(password, hash)) {
+      return {
+        token: this.tokenService.generateToken({ id }),
+      };
+    }
+
+    return null;
+  }
+};
+
+export default AuthService;

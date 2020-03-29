@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 
 class UserController {
   public router;
-  protected path = '/users/';
-  protected pathOne = '/users/:id/';
+  protected path = '/users';
+  protected pathOne = '/users/:id';
   protected service;
   protected wrapError;
 
