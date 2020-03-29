@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 class GroceryListItemController {
   public router;
-  private path = '/groceries/';
+  private path = '/groceries';
   private pathOne = '/groceries/:id';
   private service;
   private wrapError;
