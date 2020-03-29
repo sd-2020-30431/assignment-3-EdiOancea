@@ -6,7 +6,7 @@ class TokenService {
   }
 
   public generateToken = (body: any): string => {
-    return this.jwt.sign(body, 'secretKey');
+    return this.jwt.sign(body, process.env.SECRET_KEY);
   }
 }
 

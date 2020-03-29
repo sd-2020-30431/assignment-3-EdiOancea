@@ -1,6 +1,6 @@
 import IBaseEncryption from '../interfaces/IBaseEncryption';
 
-class Encryption implements IBaseEncryption {
+class EncryptionService implements IBaseEncryption {
   private saltRounds = 10;
   private bcrypt;
 
@@ -17,4 +17,4 @@ class Encryption implements IBaseEncryption {
   }
 }
 
-export default Encryption;
+export default EncryptionService;

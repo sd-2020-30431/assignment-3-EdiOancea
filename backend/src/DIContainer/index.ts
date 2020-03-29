@@ -32,11 +32,11 @@ bottle.factory('Sequelize', () => Sequelize);
 bottle.factory('ExpressRouter', ({ express }) => express.Router());
 bottle.factory('jwt', () => jwt);
 bottle.factory('sequelize', () => new Sequelize(
-  'wasteless',
-  'algotech',
-  '',
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: 'localhost',
+    host: process.env.DB_HOST,
     dialect: 'postgres',
   }
 ));
