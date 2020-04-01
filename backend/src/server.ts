@@ -3,4 +3,4 @@ import DIContainer from './DIContainer';
 
 const app = DIContainer.container.App;
 
-app.listen();
+module.exports = app.listen();

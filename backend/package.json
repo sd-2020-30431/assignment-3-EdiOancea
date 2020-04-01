@@ -18,7 +18,11 @@
   "scripts": {
     "dev": "ts-node src/server.ts",
     "start": "ts-node src/server.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "cross-env NODE_ENV=test jest",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset"
   },
   "author": "Eduard Oancea",
   "license": "ISC",
@@ -26,6 +30,23 @@
     "@types/bcrypt": "3.0.0",
     "@types/bluebird": "3.5.30",
     "@types/node": "12.12.31",
-    "@types/validator": "12.0.1"
+    "@types/validator": "12.0.1",
+    "cross-env": "7.0.2",
+    "jest": "25.2.4",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "4.0.2",
+    "ts-jest": "25.3.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    },
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
