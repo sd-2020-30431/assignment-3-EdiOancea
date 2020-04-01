@@ -41,7 +41,10 @@ bottle.factory('sequelize', () => new Sequelize(
   }
 ));
 bottle.factory('GroceryListItemModel', ({ sequelize }) => GroceryListItemModelFactory(sequelize));
-bottle.factory('UserModel', ({ sequelize }) => UserModelFactory(sequelize));
+bottle.factory('UserModel', ({
+  sequelize,
+  EncryptionService,
+}) => UserModelFactory(sequelize, EncryptionService));
 bottle.factory('database', ({
   UserModel,
   GroceryListItemModel,
@@ -60,7 +63,7 @@ bottle.factory('UserHttpError', () => new HttpError(403, 'Not yet pal'));
 bottle.service('TokenService', TokenService, 'jwt')
 bottle.service('EncryptionService', EncryptionService, 'bcrypt');
 bottle.service('AuthService', AuthService, 'database', 'EncryptionService', 'TokenService');
-bottle.service('UserService', UserService, 'database', 'EncryptionService', 'UserHttpError');
+bottle.service('UserService', UserService, 'database', 'UserHttpError');
 bottle.service('GroceryListItemService', GroceryListItemService, 'database');
 bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter', 'wrapError');
 bottle.service(

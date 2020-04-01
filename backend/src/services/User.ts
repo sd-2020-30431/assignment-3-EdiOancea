@@ -3,20 +3,17 @@ import IBaseService from '../interfaces/IBaseService';
 class UserService implements IBaseService {
   private exclude = ['password'];
   private database;
-  private encryptionService;
   private error
 
-  constructor(database, encryptionService, HttpError) {
+  constructor(database, HttpError) {
     this.database = database;
-    this.encryptionService = encryptionService;
     this.error = HttpError;
   }
 
   async create(body: { email: string; password: string }) {
     const { User } = this.database;
     const { email, password } = body;
-    const hash = this.encryptionService.generateHash(password);
-    const { id } = await User.create({ email, password: hash });
+    const { id } = await User.create({ email, password });
 
     return await User.findByPk(id, {
       attributes: {
