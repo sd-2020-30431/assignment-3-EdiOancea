@@ -10,7 +10,7 @@
   "test": {
     "username": "algotech",
     "password": null,
-    "database": "wasteless",
+    "database": "wasteless_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false
