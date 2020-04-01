@@ -12,14 +12,32 @@ class GroceryListItemService implements IBaseService {
     quantity: number,
     calories: number,
     userId: number,
+    consumptionDate: Date,
+    purchaseDate: Date,
+    expirationDate: Date,
   }) {
-    const { GroceryListItem } = this.database;
-    const { name, quantity, calories, userId } = body;
+    const { GroceryListItem, User } = this.database;
+    const {
+      name,
+      quantity,
+      calories,
+      userId,
+      consumptionDate,
+      purchaseDate,
+      expirationDate,
+    } = body;
+    if (!User.findByPk(userId)) {
+      return null;
+    }
+
     const { id } = await GroceryListItem.create({
       name,
       quantity,
       calories,
       userId,
+      consumptionDate,
+      purchaseDate,
+      expirationDate,
     });
 
     return await GroceryListItem.findByPk(id);
@@ -37,26 +55,36 @@ class GroceryListItemService implements IBaseService {
     return await GroceryListItem.findAll();
   }
 
-  async update(
-    body: {
-      id: number,
-      name: string,
-      quantity: number,
-      calories: number,
-    }
-  ) {
+  async update(body: {
+    id: number,
+    name: string,
+    quantity: number,
+    calories: number,
+    userId: number,
+    consumptionDate: Date,
+    purchaseDate: Date,
+    expirationDate: Date,
+  }) {
     const { GroceryListItem } = this.database;
     const {
       id,
       name,
       quantity,
       calories,
+      userId,
+      consumptionDate,
+      purchaseDate,
+      expirationDate,
     } = body;
 
     await GroceryListItem.update({
       name,
       quantity,
       calories,
+      userId,
+      consumptionDate,
+      purchaseDate,
+      expirationDate,
     }, {
       where: {
         id,

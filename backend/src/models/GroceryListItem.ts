@@ -20,16 +20,41 @@ const GroceryListItemModelFactory = (sequelize: Sequelize) => {
     },
     name: {
       type: DataTypes.STRING(128),
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [4, 127],
+      },
     },
     quantity: {
       type: DataTypes.INTEGER.UNSIGNED,
+      validate: {
+        isInt: true,
+        min: 1,
+      },
     },
     calories: {
       type: DataTypes.INTEGER.UNSIGNED,
+      validate: {
+        isInt: true,
+        min: 1,
+      },
     },
     userId: {
       field: 'user_id',
       type: DataTypes.INTEGER.UNSIGNED,
+    },
+    consumptionDate: {
+      field: 'consumption_date',
+      type: DataTypes.DATEONLY,
+    },
+    purchaseDate: {
+      field: 'purchase_date',
+      type: DataTypes.DATEONLY,
+    },
+    expirationDate: {
+      field: 'expiration_date',
+      type: DataTypes.DATEONLY,
     },
     createdAt: {
       field: 'created_at',

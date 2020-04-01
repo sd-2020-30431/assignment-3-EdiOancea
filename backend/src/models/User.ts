@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-const UserModelFactory = (sequelize: Sequelize) => {
+const UserModelFactory = (sequelize: Sequelize, EncryptionService) => {
   class User extends Model {
     public id!: number;
     public email!: string;
@@ -19,6 +19,7 @@ const UserModelFactory = (sequelize: Sequelize) => {
     email: {
       type: DataTypes.STRING(128),
       unique: true,
+      allowNull: false,
       validate: {
         isEmail: true,
         notEmpty: true,
@@ -26,6 +27,10 @@ const UserModelFactory = (sequelize: Sequelize) => {
     },
     password: {
       type: DataTypes.STRING(128),
+      allowNull: false,
+      validate: {
+        len: [6, 127],
+      },
     },
     createdAt: {
       field: 'created_at',
@@ -38,6 +43,11 @@ const UserModelFactory = (sequelize: Sequelize) => {
   }, {
     tableName: 'users',
     sequelize: sequelize,
+  });
+
+  User.beforeCreate((user, options) => {
+    user.password = EncryptionService.generateHash(user.password);
+    user.email = user.email.toLowerCase();
   });
 
   const associate = ({ GroceryListItem }) => {
