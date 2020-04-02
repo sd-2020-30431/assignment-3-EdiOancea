@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Button from '../../components/forms/Button';
 import TextField from '../../components/forms/TextField';
@@ -8,7 +8,9 @@ import SignInComponent from '../../components/forms/SignIn';
 import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
 
-class SignInPage extends React.Component<SignInPageProps, {}> {
+type Props = RouteComponentProps<{}>;
+
+class SignInPage extends React.Component<Props, {}> {
   private validationSchema: Yup.ObjectSchema<SignInValidationSchema>;
   private fields: FieldType[] = [
     {
@@ -32,7 +34,7 @@ class SignInPage extends React.Component<SignInPageProps, {}> {
     },
   ];
 
-  constructor(props: SignInPageProps) {
+  constructor(props: Props) {
     super(props);
 
     this.validationSchema = Yup.object<SignInValidationSchema>().shape({
