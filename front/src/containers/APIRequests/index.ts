@@ -3,14 +3,17 @@ type APIRequestsType = {
 };
 
 const APIRequests = {
-  post: async (route: string, data: any) => {
+  request: async (method: string, route: string, data?: any) => {
+    const token = localStorage.getItem('token');
+
     const res = await fetch(`http://localhost:5000${route}`, {
-      method: 'POST',
+      method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',
       },
-      body: JSON.stringify(data),
+      body: method === 'GET' ? null : JSON.stringify(data),
     });
 
     return await res.json();

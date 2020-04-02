@@ -48,12 +48,11 @@ class SignInPage extends React.Component<Props, {}> {
       return;
     }
 
-    //for now
-    //this.props.history.push('/');
+    this.props.history.push('/');
   }
 
   private onSubmit = async (values: SignInValidationSchema) => {
-    const { token } = await APIRequests.post('/auth', values);
+    const { token } = await APIRequests.request('POST', '/auth', values);
 
     if (token) {
       localStorage.setItem('token', token);

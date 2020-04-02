@@ -72,7 +72,7 @@ class SignUpPage extends React.Component<Props, {}> {
   }
 
   private onSubmit = async (values: SignUpValidationSchema) => {
-    const response = await APIRequests.post('/users', values);
+    const response = await APIRequests.request('POST', '/users', values);
   }
 
   renderForm = () => (

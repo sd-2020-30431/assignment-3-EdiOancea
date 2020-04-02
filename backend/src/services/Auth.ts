@@ -21,7 +21,7 @@ class AuthService {
 
     if (this.encryptionService.compare(password, hash)) {
       return {
-        token: this.tokenService.generateToken({ id }),
+        token: this.tokenService.generateToken(id),
       };
     }
 

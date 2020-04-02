@@ -4,6 +4,7 @@ class UserController {
   public router;
   protected path = '/users';
   protected pathOne = '/users/:id';
+  protected pathMe = '/users/me';
   protected service;
   protected wrapError;
 
@@ -18,6 +19,7 @@ class UserController {
     this.router
       .post(this.path, this.wrapError(this.create))
       .get(this.path, this.wrapError(this.getAll))
+      .get(this.pathMe, this.wrapError(this.getMe))
       .get(this.pathOne, this.wrapError(this.get))
       .put(this.pathOne, this.wrapError(this.update))
       .delete(this.pathOne, this.wrapError(this.delete));
@@ -33,6 +35,12 @@ class UserController {
     const { params: { id } } = req;
 
     res.json(await this.service.readOne(id));
+  }
+
+  protected getMe = async (req: Request, res: Response) => {
+    const token = req.header('Authorization');
+
+    res.json(await this.service.getMe(token));
   }
 
   protected getAll = async (req: Request, res: Response) => {

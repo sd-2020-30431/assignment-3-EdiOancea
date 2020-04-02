@@ -3,11 +3,13 @@ import IBaseService from '../interfaces/IBaseService';
 class UserService implements IBaseService {
   private exclude = ['password'];
   private database;
-  private error
+  private error;
+  private TokenService;
 
-  constructor(database, HttpError) {
+  constructor(database, HttpError, TokenService) {
     this.database = database;
     this.error = HttpError;
+    this.TokenService = TokenService;
   }
 
   async create(body: { email: string; password: string }) {
@@ -32,6 +34,19 @@ class UserService implements IBaseService {
     });
   }
 
+  async getMe(header) {
+    const { User } = this.database;
+    const token = header.slice(7);
+    const id = this.TokenService.verifyToken(token);
+
+    return await User.findByPk(id, {
+      attributes: {
+        exclude: this.exclude,
+      },
+      include: 'groceryListItems',
+    });
+  }
+
   async readAll() {
     const { User } = this.database;
 
@@ -39,7 +54,6 @@ class UserService implements IBaseService {
       attributes: {
         exclude: this.exclude,
       },
-      include: 'groceryListItems',
     });
   }
 
