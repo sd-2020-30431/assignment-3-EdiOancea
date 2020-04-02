@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Button from '../../components/forms/Button';
 import TextField from '../../components/forms/TextField';
@@ -8,7 +8,9 @@ import SignUpComponent from '../../components/forms/SignUp';
 import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
 
-class SignUpPage extends React.Component<SignUpPageProps, {}> {
+type Props = RouteComponentProps<{}>;
+
+class SignUpPage extends React.Component<Props, {}> {
   private validationSchema: Yup.ObjectSchema<SignUpValidationSchema>;
   private fields: FieldType[] = [
     {
@@ -42,7 +44,7 @@ class SignUpPage extends React.Component<SignUpPageProps, {}> {
     },
   ];
 
-  constructor(props: SignInPageProps) {
+  constructor(props: Props) {
     super(props);
 
     this.validationSchema = Yup.object<SignUpValidationSchema>().shape({
@@ -70,7 +72,7 @@ class SignUpPage extends React.Component<SignUpPageProps, {}> {
   }
 
   private onSubmit = async (values: SignUpValidationSchema) => {
-    const response = await APIRequests.post('/users', values);
+    const response = await APIRequests.request('POST', '/users', values);
   }
 
   renderForm = () => (
