@@ -10,7 +10,7 @@ import APIRequests from '../APIRequests';
 
 class SignUpPage extends React.Component<SignUpPageProps, {}> {
   private validationSchema: Yup.ObjectSchema<SignUpValidationSchema>;
-  private fields = [
+  private fields: FieldType[] = [
     {
       fieldProps: {
         id: 'email',

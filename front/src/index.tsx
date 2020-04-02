@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory, History } from 'history';
 
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 
-const history = createBrowserHistory();
+const history: History = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +14,7 @@ ReactDOM.render(
       <App />
     </Router>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root') as HTMLElement
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import SignInPage from '../SignInPage';
 import SignUpPage from '../SignUpPage';
 
-const App = () => {
+const App: React.FC<{}> = () => {
   return (
     <>
       <CssBaseline />
