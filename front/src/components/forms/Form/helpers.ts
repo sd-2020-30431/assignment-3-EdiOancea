@@ -2,7 +2,6 @@ import { ObjectSchema } from 'yup';
 
 type GetValidate = boolean | FormValues;
 
-// TODO: find validationSchema type
 export const getValidate = (validationSchema: ObjectSchema) => (values: FormValues) => {
   try {
     validationSchema.validateSync(
@@ -10,10 +9,16 @@ export const getValidate = (validationSchema: ObjectSchema) => (values: FormValu
       { abortEarly: false, context: { values } },
     );
   } catch (err) {
-    return err.inner.reduce((errors, { path, message }) => ({
-      ...errors,
-      [path]: errors[path] ? `${errors[path]}. ${message}` : message,
-    }), {});
+    return err.inner.reduce(
+      (errors: any, { path, message }: {
+        path: string;
+        message: string;
+      }) => ({
+        ...errors,
+        [path]: errors[path] ? `${errors[path]}. ${message}` : message,
+      }),
+      {}
+    );
   }
 
   return true;

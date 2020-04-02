@@ -4,7 +4,11 @@ import { Link, Container, CssBaseline } from '@material-ui/core';
 
 import { Wrapper, StyledAvatar, Title } from './styles';
 
-const SignIn: React.FC<{ renderForm: Function }> = ({ renderForm }) => (
+type Props = {
+  renderForm: () => React.ReactNode;
+};
+
+const SignIn: React.FC<Props> = ({ renderForm }) => (
   <Container component="main" maxWidth="xs">
     <CssBaseline />
     <Wrapper>

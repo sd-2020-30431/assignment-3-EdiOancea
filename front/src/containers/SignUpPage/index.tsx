@@ -9,7 +9,7 @@ import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
 
 class SignUpPage extends React.Component<SignUpPageProps, {}> {
-  private validationSchema;
+  private validationSchema: Yup.ObjectSchema<SignUpValidationSchema>;
   private fields = [
     {
       fieldProps: {
@@ -55,7 +55,8 @@ class SignUpPage extends React.Component<SignUpPageProps, {}> {
         .test({
           name: 'equal passwords',
           message: 'This field must be equal to the password field.',
-          test: function(values) {
+          test: function(values: SignUpValidationSchema) {
+            // @ts-ignore
             const { password } = this.options.context.values;
 
             return values === password;

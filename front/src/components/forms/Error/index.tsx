@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-  error: any;
+  error: React.ReactNode;
   touched: boolean | undefined;
 }
 

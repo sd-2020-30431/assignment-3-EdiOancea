@@ -4,7 +4,17 @@ import { Field, FieldRenderProps } from 'react-final-form';
 
 import Error from '../Error';
 
-type Props = FieldRenderProps<string, any> & TextFieldProps;
+type Props = FieldRenderProps<string, any> & {
+  variant: 'outlined';
+  margin?: 'normal' | 'none' | 'dense';
+  fullWidth?: boolean;
+  id: string;
+  label: string;
+  name: string;
+  autoComplete: string | undefined;
+  autoFocus?: boolean;
+  type: string;
+};
 
 const TextField: React.FC<Props> = ({
   variant,

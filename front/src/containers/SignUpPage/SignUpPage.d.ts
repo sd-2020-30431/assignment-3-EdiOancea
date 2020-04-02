@@ -1,5 +1,5 @@
 type SignUpPageProps = RouteComponentProps<{
-  validationSchema: any;
+  validationSchema: ObjectSchema;
 }>;
 
 interface SignUpValidationSchema {

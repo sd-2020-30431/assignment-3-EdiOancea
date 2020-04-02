@@ -9,16 +9,6 @@ const StyledForm = styled.form`
   width: 100%;
 `;
 
-type FieldType = {
-  fieldProps: {
-    id: string;
-    label: string;
-    name: string;
-    autoComplete: string;
-  };
-  component: Function;
-};
-
 type Props = {
   onSubmit: (values: FormValues) => Promise<void>;
   validationSchema: ObjectSchema;

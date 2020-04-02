@@ -9,8 +9,8 @@ import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
 
 class SignInPage extends React.Component<SignInPageProps, {}> {
-  private validationSchema;
-  private fields = [
+  private validationSchema: Yup.ObjectSchema<SignInValidationSchema>;
+  private fields: FieldType[] = [
     {
       fieldProps: {
         id: 'email',

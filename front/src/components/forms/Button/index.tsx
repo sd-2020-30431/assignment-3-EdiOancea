@@ -14,7 +14,6 @@ type Props = {
   color?: 'primary';
 }
 
-
 const Button: React.FC<Props> = ({
   children,
   type = 'submit',
