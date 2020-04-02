@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as jwt from 'jsonwebtoken';
+import * as cors from 'cors';
 const Bottle = require('bottlejs');
 
 import App from '../app';
@@ -90,7 +91,7 @@ bottle.factory('App', ({
 }) => new App(
   express(),
   5000,
-  [bodyParser.json()],
+  [bodyParser.json(), cors()],
   [
     AuthController,
     UserController,
