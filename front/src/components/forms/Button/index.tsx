@@ -6,7 +6,16 @@ const StyledButton = styled(MuiButton)`
   margin: 20px 0;
 `;
 
-const Button: React.FC<ButtonProps> = ({
+type Props = {
+  children: React.ReactNode;
+  type: 'submit';
+  fullWidth?: boolean;
+  variant?: 'contained';
+  color?: 'primary';
+}
+
+
+const Button: React.FC<Props> = ({
   children,
   type = 'submit',
   fullWidth = true,

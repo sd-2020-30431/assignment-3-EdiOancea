@@ -6,7 +6,12 @@ const Wrapper = styled.div`
   margin: 0 3px;
 `;
 
-const Error: React.FC<ErrorProps> = ({ error, touched }) => (
+type Props = {
+  error: any;
+  touched: boolean | undefined;
+}
+
+const Error: React.FC<Props> = ({ error, touched }) => (
   touched && error && <Wrapper>{error}</Wrapper>
 ) || null;
 

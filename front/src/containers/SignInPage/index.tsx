@@ -58,7 +58,6 @@ class SignInPage extends React.Component<SignInPageProps, {}> {
 
       this.props.history.push('/');
     }
-
   }
 
   renderForm = () => (

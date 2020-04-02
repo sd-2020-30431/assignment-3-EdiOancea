@@ -1,6 +1,9 @@
+import { ObjectSchema } from 'yup';
+
 type GetValidate = boolean | FormValues;
 
-export const getValidate = (validationSchema) => (values: FormValues) => {
+// TODO: find validationSchema type
+export const getValidate = (validationSchema: ObjectSchema) => (values: FormValues) => {
   try {
     validationSchema.validateSync(
       values,
