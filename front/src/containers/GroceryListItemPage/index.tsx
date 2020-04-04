@@ -147,13 +147,28 @@ const GroceryListItemPage: React.FC<{}> = () => {
       history.push('/');
     }
   };
+  const deleteGrocery = async () => {
+    const response = await APIRequests.request('DELETE', `/groceries/${id}`);
+
+    if (response.id) {
+      history.push('/');
+      setItems(items.filter(item => item.id !== response.id));
+    }
+  };
   const renderForm: () => React.ReactNode = () => (
     <Form
       {...{
         onSubmit,
         validationSchema,
         fields: hydrateFields(fields, defaultValues),
-        submitButton: { render: () => <Button type="submit">{buttonText}</Button> },
+        submitButton: {
+          render: () => (
+            <>
+              <Button type="submit">{buttonText}</Button>
+              {id && <Button type="button" onClick={deleteGrocery}>Delete grocery</Button>}
+            </>
+          )
+        },
         errors: null,
       }}
     />

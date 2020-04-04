@@ -34,7 +34,7 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
         <Table className={classes.table} size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>{'          '}</TableCell>
+              <TableCell>{''}</TableCell>
               <TableCell>Grocery item</TableCell>
               <TableCell align="right">Quantity</TableCell>
               <TableCell align="right">Calories</TableCell>
@@ -53,7 +53,7 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
               expirationDate,
               consumptionDate,
             }: GroceryListItem) => (
-              <TableRow key={name}>
+              <TableRow key={id}>
                 <TableCell component="th" scope="row">
                   <Link to={`/upsert-grocery/${id}`}>
                     Edit
