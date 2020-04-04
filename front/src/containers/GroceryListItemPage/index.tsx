@@ -41,7 +41,7 @@ const validationSchema = Yup.object<GroceryListItemValidationSchema>().shape({
         // @ts-ignore
         const { purchaseDate } = this.options.context.values;
 
-        return dayjs(value).isAfter(dayjs(purchaseDate));
+        return !dayjs(value).isBefore(dayjs(purchaseDate));
       }
     }),
 });

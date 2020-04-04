@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Table,
@@ -33,6 +34,7 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
         <Table className={classes.table} size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>{'          '}</TableCell>
               <TableCell>Grocery item</TableCell>
               <TableCell align="right">Quantity</TableCell>
               <TableCell align="right">Calories</TableCell>
@@ -43,6 +45,7 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
           </TableHead>
           <TableBody>
             {data.map(({
+              id,
               name,
               quantity,
               calories,
@@ -51,6 +54,11 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
               consumptionDate,
             }: GroceryListItem) => (
               <TableRow key={name}>
+                <TableCell component="th" scope="row">
+                  <Link to={`/upsert-grocery/${id}`}>
+                    Edit
+                  </Link>
+                </TableCell>
                 <TableCell component="th" scope="row">
                   {name}
                 </TableCell>
