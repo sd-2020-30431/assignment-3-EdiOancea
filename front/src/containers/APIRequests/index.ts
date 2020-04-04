@@ -1,9 +1,5 @@
-type APIRequestsType = {
-  post: (route: string, data: any) => Promise<any>;
-};
-
 const APIRequests = {
-  request: async (method: string, route: string, data?: any) => {
+  request: async (method: string, route: string, data?: any): Promise<any> => {
     const token = localStorage.getItem('token');
 
     const res = await fetch(`http://localhost:5000${route}`, {

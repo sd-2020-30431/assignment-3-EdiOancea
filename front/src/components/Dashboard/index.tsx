@@ -11,8 +11,11 @@ import {
   Container,
 } from '@material-ui/core';
 
+import Button from '../forms/Button';
+
 type Props = {
-  data: any[];
+  data: GroceryListItem[];
+  goToAddGrocery: () => void;
 };
 
 const useStyles = makeStyles({
@@ -21,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Dashboard: React.FC<Props> = ({ data }) => {
+const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
   const classes = useStyles();
 
   return (
@@ -61,6 +64,9 @@ const Dashboard: React.FC<Props> = ({ data }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button onClick={goToAddGrocery} type="button">
+        Add grocery item
+      </Button>
     </Container>
   );
 };

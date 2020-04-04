@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import TextField from '../../components/forms/TextField';
 import SignUpComponent from '../../components/forms/SignUp';
 import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
+import { GlobalContext } from '../App';
 
 const validationSchema = Yup.object<SignUpValidationSchema>().shape({
   email: Yup.string()
@@ -18,11 +19,11 @@ const validationSchema = Yup.object<SignUpValidationSchema>().shape({
     .test({
       name: 'equal passwords',
       message: 'This field must be equal to the password field.',
-      test: function(values: SignUpValidationSchema) {
+      test: function(value: string) {
         // @ts-ignore
         const { password } = this.options.context.values;
 
-        return values === password;
+        return value === password;
       }
     }),
 });
@@ -61,6 +62,7 @@ const fields: FieldType[] = [
 
 const SignUpPage: React.FC<{}> = () => {
   const history = useHistory();
+  const { setToken } = useContext(GlobalContext);
   const onSubmit = async (values: SignUpValidationSchema) => {
     const { error } = await APIRequests.request('POST', '/users', values);
 
@@ -81,8 +83,8 @@ const SignUpPage: React.FC<{}> = () => {
   );
 
   useEffect(() => {
-    localStorage.setItem('token', '');
-  }, []);
+    setToken('');
+  }, [setToken]);
 
   return (
     <SignUpComponent renderForm={renderForm}/>

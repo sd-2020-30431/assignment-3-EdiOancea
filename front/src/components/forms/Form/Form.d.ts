@@ -1,4 +1,4 @@
-interface FormValues extends SignInValidationSchema, SignUpValidationSchema {};
+interface FormValues extends SignInValidationSchema, SignUpValidationSchema, GroceryListItemValidationSchema {};
 
 type FieldType = {
   fieldProps: {
@@ -7,6 +7,8 @@ type FieldType = {
     name: string;
     autoComplete: string;
     type?: string;
+    defaultValue?: string;
   };
   component: React.FC<any>;
+  order?: number;
 };
