@@ -13,11 +13,37 @@ import { GlobalContext } from '../App';
 
 const validationSchema = Yup.object<GroceryListItemValidationSchema>().shape({
   name: Yup.string().required('This field is required'),
-  quantity: Yup.number().required('This field is required'),
-  calories: Yup.number().required('This field is required'),
+  quantity: Yup.number()
+    .typeError('This field must be a number')
+    .required('This field is required'),
+  calories: Yup.number()
+    .typeError('This field must be a number')
+    .required('This field is required'),
   purchaseDate: Yup.date().required('This field is required'),
-  expirationDate: Yup.date().required('This field is required'),
-  consumptionDate: Yup.date().required('This field is required'),
+  expirationDate: Yup.date()
+    .required('This field is required')
+    .test({
+      name: 'after purchase date',
+      message: 'Expiration date must be after purchase date',
+      test: function(value: string) {
+        // @ts-ignore
+        const { purchaseDate } = this.options.context.values;
+
+        return !dayjs(value).isBefore(dayjs(purchaseDate));
+      }
+    }),
+  consumptionDate: Yup.date()
+    .required('This field is required')
+    .test({
+      name: 'after purchase date',
+      message: 'Expiration date must be after purchase date',
+      test: function(value: string) {
+        // @ts-ignore
+        const { purchaseDate } = this.options.context.values;
+
+        return dayjs(value).isAfter(dayjs(purchaseDate));
+      }
+    }),
 });
 
 const hydrateFields = (

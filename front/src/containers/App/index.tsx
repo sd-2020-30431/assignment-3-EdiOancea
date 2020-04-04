@@ -7,6 +7,7 @@ import React, {
 import { CssBaseline } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 
+import ProtectedRoute from '../ProtectedRoute';
 import SignInPage from '../SignInPage';
 import SignUpPage from '../SignUpPage';
 import Dashboard from '../Dashboard';
@@ -71,12 +72,12 @@ const App: React.FC<{}> = () => {
           <Route path="/signup">
             <SignUpPage />
           </Route>
-          <Route path="/upsert-grocery/:id?">
+          <ProtectedRoute path="/upsert-grocery/:id?">
             <GroceryListItemPage />
-          </Route>
-          <Route path="/">
+          </ProtectedRoute>
+          <ProtectedRoute path="/">
             <Dashboard />
-          </Route>
+          </ProtectedRoute>
         </Switch>
       </GlobalContext.Provider>
     </>

@@ -19,11 +19,11 @@ const validationSchema = Yup.object<SignUpValidationSchema>().shape({
     .test({
       name: 'equal passwords',
       message: 'This field must be equal to the password field.',
-      test: function(values: SignUpValidationSchema) {
+      test: function(value: string) {
         // @ts-ignore
         const { password } = this.options.context.values;
 
-        return values === password;
+        return value === password;
       }
     }),
 });
