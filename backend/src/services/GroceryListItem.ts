@@ -19,27 +19,16 @@ class GroceryListItemService implements IBaseService {
       expirationDate: Date,
     }
   ) {
-    const { GroceryListItem, User } = this.database;
-    const {
-      name,
-      quantity,
-      calories,
-      consumptionDate,
-      purchaseDate,
-      expirationDate,
-    } = body;
+    try {
+      const { GroceryListItem, User } = this.database;
+      const { id } = await GroceryListItem.create({ ...body, userId });
 
-    const { id } = await GroceryListItem.create({
-      name,
-      quantity,
-      calories,
-      userId,
-      consumptionDate,
-      purchaseDate,
-      expirationDate,
-    });
-
-    return await GroceryListItem.findByPk(id);
+      return await GroceryListItem.findByPk(id);
+    } catch (e) {
+      return {
+        errors: e.errors.map((error: any) => error.message),
+      }
+    }
   }
 
   async readOne(id: string) {
@@ -64,29 +53,18 @@ class GroceryListItemService implements IBaseService {
     purchaseDate: Date,
     expirationDate: Date,
   }) {
-    const { GroceryListItem } = this.database;
-    const {
-      id,
-      name,
-      quantity,
-      calories,
-      userId,
-      consumptionDate,
-      purchaseDate,
-      expirationDate,
-    } = body;
+    try {
+      const { GroceryListItem } = this.database;
+      const { id } = body;
+      await GroceryListItem.update(body, { where: { id } });
 
-    await GroceryListItem.update({
-      name,
-      quantity,
-      calories,
-      userId,
-      consumptionDate,
-      purchaseDate,
-      expirationDate,
-    }, { where: { id } });
+      return await this.readOne(id);
+    } catch (e) {
+      return {
+        errors: e.errors.map((error: any) => error.message),
+      }
+    }
 
-    return await this.readOne(id);
   }
 
   async delete(id: string) {

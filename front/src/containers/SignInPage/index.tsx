@@ -62,7 +62,6 @@ const SignInPage: React.FC<{}> = () => {
         validationSchema,
         fields,
         submitButton: { render: () => <Button type="submit">Sign in</Button> },
-        errors: null,
       }}
     />
   );

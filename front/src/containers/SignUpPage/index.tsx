@@ -1,4 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, {
+  useEffect,
+  useContext,
+  useState,
+} from 'react';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
@@ -63,10 +67,14 @@ const fields: FieldType[] = [
 const SignUpPage: React.FC<{}> = () => {
   const history = useHistory();
   const { setToken } = useContext(GlobalContext);
-  const onSubmit = async (values: SignUpValidationSchema) => {
-    const { error } = await APIRequests.request('POST', '/users', values);
+  const [errors, setErrors] = useState<string[]>([]);
 
-    if (!error) {
+  const onSubmit = async (values: SignUpValidationSchema) => {
+    const { errors } = await APIRequests.request('POST', '/users', values);
+
+    if (errors) {
+      setErrors(errors);
+    } else {
       history.push('/signin');
     }
   };
@@ -77,7 +85,7 @@ const SignUpPage: React.FC<{}> = () => {
         validationSchema,
         fields,
         submitButton: { render: () => <Button type="submit">Sign up</Button> },
-        errors: null,
+        errors,
       }}
     />
   );

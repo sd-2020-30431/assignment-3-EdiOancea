@@ -14,7 +14,7 @@ type Props = {
   validationSchema: ObjectSchema;
   fields: FieldType[];
   submitButton: { render: () => React.ReactNode };
-  errors: { message: string }[] | null;
+  errors?: string[];
 };
 
 const Form: React.FC<Props> = ({
@@ -22,7 +22,7 @@ const Form: React.FC<Props> = ({
   validationSchema,
   fields,
   submitButton,
-  errors,
+  errors = [],
 }) => {
   return (
     <RFForm
@@ -39,10 +39,10 @@ const Form: React.FC<Props> = ({
                 }}
               />
             ))}
-            {errors && errors.map((error: { message: string; }) => (
+            {errors.map((error: string) => (
               <Error
                 {...{
-                  error: error.message,
+                  error,
                   touched: true,
                 }}
               />

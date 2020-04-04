@@ -34,8 +34,7 @@ class GroceryListItemController implements IBaseController {
   }
 
   private get = async (req: Request, res: Response) => {
-    // @ts-ignore
-    const { params: { id }, userId } = req;
+    const { params: { id } } = req;
 
     res.json(await this.groceryListItemService.readOne(id));
   }
