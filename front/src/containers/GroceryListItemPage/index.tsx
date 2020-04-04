@@ -130,10 +130,12 @@ const fields = {
 
 const GroceryListItemPage: React.FC<{}> = () => {
   const [defaultValues, setDefaultValues] = useState<GroceryListItemValidationSchema>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const history = useHistory();
   const { id } = useParams();
   const { user, items, setItems } = useContext(GlobalContext);
   const buttonText = id ? 'Modify grocery' : 'Add grocery';
+
   const onSubmit = async (values: GroceryListItemValidationSchema) => {
     const requestType = id ? 'PUT' : 'POST';
     const url = id ? `/groceries/${id}` : '/groceries';
@@ -145,6 +147,8 @@ const GroceryListItemPage: React.FC<{}> = () => {
     if (response.id) {
       setItems([...items, response]);
       history.push('/');
+    } else {
+      setErrors(response.errors);
     }
   };
   const deleteGrocery = async () => {
@@ -169,7 +173,7 @@ const GroceryListItemPage: React.FC<{}> = () => {
             </>
           )
         },
-        errors: null,
+        errors,
       }}
     />
   );

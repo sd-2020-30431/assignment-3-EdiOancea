@@ -20,7 +20,6 @@ import GroceryListItemService from '../services/GroceryListItem';
 import EncryptionService from '../services/Encryption';
 import wrapError from '../services/WrapError';
 import AuthMiddlewareFactory from '../middlewares/Auth';
-import ErrorMiddleware from '../middlewares/Error';
 
 const bottle = new Bottle();
 const env = (process.env.NODE_ENV || 'development').toUpperCase();
@@ -98,7 +97,7 @@ bottle.factory('App', (container: IDIContainer) => new App(
     container.UserController,
     container.GroceryListItemController,
   ],
-  [ErrorMiddleware],
+  []
 ));
 
 export default bottle;
