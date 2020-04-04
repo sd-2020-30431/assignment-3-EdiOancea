@@ -14,6 +14,7 @@ type Props = FieldRenderProps<string, any> & {
   autoComplete: string | undefined;
   autoFocus?: boolean;
   type: string;
+  defaultValue?: string;
 };
 
 const TextField: React.FC<Props> = ({
@@ -26,10 +27,12 @@ const TextField: React.FC<Props> = ({
   autoComplete,
   autoFocus = false,
   type,
+  defaultValue,
 }) => (
   <Field
     {...{
       name,
+      defaultValue,
       render: ({ input, meta: { error, touched } }) => (
         <>
           <MuiTextField
@@ -45,12 +48,7 @@ const TextField: React.FC<Props> = ({
               ...input,
             }}
           />
-          <Error
-            {...{
-              error,
-              touched,
-            }}
-          />
+          <Error error={error} touched={touched} />
         </>
       ),
     }}

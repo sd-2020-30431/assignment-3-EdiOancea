@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import TextField from '../../components/forms/TextField';
 import SignInComponent from '../../components/forms/SignIn';
 import Form from '../../components/forms/Form';
 import APIRequests from '../APIRequests';
+import { GlobalContext } from '../App';
 
 const validationSchema = Yup.object<SignInValidationSchema>().shape({
   email: Yup.string().required('This field is required'),
@@ -37,21 +38,22 @@ const fields: FieldType[] = [
 
 const SignInPage: React.FC<{}> = () => {
   const history = useHistory();
+  const { token, setToken } = useContext(GlobalContext);
   const onSubmit = async (values: SignInValidationSchema) => {
     const { token } = await APIRequests.request('POST', '/auth', values);
 
     if (token) {
-      localStorage.setItem('token', token);
+      setToken(token);
 
       history.push('/');
     }
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (token) {
       history.push('/');
     }
-  }, [history]);
+  }, [token, history]);
 
   const renderForm: () => React.ReactNode = () => (
     <Form

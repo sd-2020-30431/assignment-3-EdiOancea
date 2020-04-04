@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import APIRequests from '../APIRequests';
+import { GlobalContext } from '../App';
 import DashboardComponent from '../../components/Dashboard';
 
 const Dashboard: React.FC<{}> = () => {
-  const [items, setItems] = useState<GroceryListItem[]>([]);
-  const [user, setUser] = useState<User>(null);
+  const { items } = useContext(GlobalContext);
+  const history = useHistory();
 
-  useEffect(() => {
-    APIRequests.request('GET', '/users/me').then(user => {
-      const { groceryListItems, ...rest } = user;
-      setUser(rest);
-      setItems(groceryListItems);
-    });
-  }, []);
+  const goToAddGrocery = () => history.push('/upsert-grocery');
 
   return (
-    <DashboardComponent data={items} />
+    <DashboardComponent
+      data={items}
+      goToAddGrocery={goToAddGrocery}
+    />
   );
 };
 

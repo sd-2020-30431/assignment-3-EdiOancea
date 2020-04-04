@@ -1,4 +1,5 @@
 interface GroceryListItem {
+  id: string;
   name: string;
   quantity: number;
   calories: number;
@@ -8,6 +9,7 @@ interface GroceryListItem {
 };
 
 interface User {
+  id: string;
   email: string;
   createdAt?: string;
   updatedAt?: string;
