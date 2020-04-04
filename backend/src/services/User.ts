@@ -1,15 +1,12 @@
-import IBaseService from '../interfaces/IBaseService';
+import IUserService from '../interfaces/IUserService';
+import IDatabase from '../interfaces/IDatabase';
 
-class UserService implements IBaseService {
+class UserService implements IUserService {
   private exclude = ['password'];
-  private database;
-  private error;
-  private TokenService;
+  private database: IDatabase;
 
-  constructor(database, HttpError, TokenService) {
+  constructor(database: IDatabase) {
     this.database = database;
-    this.error = HttpError;
-    this.TokenService = TokenService;
   }
 
   async create(body: { email: string; password: string }) {
@@ -24,20 +21,8 @@ class UserService implements IBaseService {
     });
   }
 
-  async readOne(id: number) {
+  async getMe(id: number) {
     const { User } = this.database;
-
-    return await User.findByPk(id, {
-      attributes: {
-        exclude: this.exclude,
-      },
-    });
-  }
-
-  async getMe(header) {
-    const { User } = this.database;
-    const token = header.slice(7);
-    const id = this.TokenService.verifyToken(token);
 
     return await User.findByPk(id, {
       attributes: {
@@ -45,24 +30,6 @@ class UserService implements IBaseService {
       },
       include: 'groceryListItems',
     });
-  }
-
-  async readAll() {
-    const { User } = this.database;
-
-    return await User.findAll({
-      attributes: {
-        exclude: this.exclude,
-      },
-    });
-  }
-
-  async update(id: number, body: { email: string; password: string }) {
-    throw this.error;
-  }
-
-  async delete(id: number) {
-    throw this.error;
   }
 };
 

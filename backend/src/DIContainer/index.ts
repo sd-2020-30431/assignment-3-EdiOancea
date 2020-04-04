@@ -10,7 +10,6 @@ import App from '../app';
 import connection from '../connection';
 import UserModelFactory from '../models/User';
 import GroceryListItemModelFactory from '../models/GroceryListItem';
-
 import AuthController from '../controllers/Auth';
 import UserController from '../controllers/User';
 import GroceryListItemController from '../controllers/GroceryListItem';
@@ -20,18 +19,18 @@ import UserService from '../services/User';
 import GroceryListItemService from '../services/GroceryListItem';
 import EncryptionService from '../services/Encryption';
 import wrapError from '../services/WrapError';
-import HttpError from '../services/HttpError';
-
+import AuthMiddlewareFactory from '../middlewares/Auth';
 import ErrorMiddleware from '../middlewares/Error';
 
 const bottle = new Bottle();
 const env = (process.env.NODE_ENV || 'development').toUpperCase();
 
+import IDIContainer from '../interfaces/IDIContainer';
+
 bottle.factory('bcrypt', () => bcrypt);
 bottle.factory('express', () => express);
 bottle.factory('wrapError', () => wrapError);
-bottle.factory('Sequelize', () => Sequelize);
-bottle.factory('ExpressRouter', ({ express }) => express.Router());
+bottle.factory('ExpressRouter', (container: IDIContainer) => container.express.Router());
 bottle.factory('jwt', () => jwt);
 bottle.factory('sequelize', () => new Sequelize(
   process.env[`DB_NAME_${env}`],
@@ -42,30 +41,33 @@ bottle.factory('sequelize', () => new Sequelize(
     dialect: 'postgres',
   }
 ));
-bottle.factory('GroceryListItemModel', ({ sequelize }) => GroceryListItemModelFactory(sequelize));
-bottle.factory('UserModel', ({
-  sequelize,
-  EncryptionService,
-}) => UserModelFactory(sequelize, EncryptionService));
-bottle.factory('database', ({
-  UserModel,
-  GroceryListItemModel,
-  Sequelizel,
-  sequelize,
-}) => connection(
-  {
-    User: UserModel,
-    GroceryListItem: GroceryListItemModel,
-  },
-  Sequelize,
-  sequelize,
-));
+bottle.factory(
+  'GroceryListItemModel',
+  (container: IDIContainer) => GroceryListItemModelFactory(container.sequelize)
+);
+bottle.factory(
+  'UserModel',
+  (container: IDIContainer) => UserModelFactory(
+    container.sequelize,
+    container.EncryptionService
+  )
+);
+bottle.factory(
+  'database',
+  (container: IDIContainer) => connection(
+    {
+      User: container.UserModel,
+      GroceryListItem: container.GroceryListItemModel,
+    },
+    Sequelize,
+    container.sequelize,
+  )
+);
 
-bottle.factory('UserHttpError', () => new HttpError(403, 'Not yet pal'));
 bottle.service('TokenService', TokenService, 'jwt')
 bottle.service('EncryptionService', EncryptionService, 'bcrypt');
 bottle.service('AuthService', AuthService, 'database', 'EncryptionService', 'TokenService');
-bottle.service('UserService', UserService, 'database', 'UserHttpError', 'TokenService');
+bottle.service('UserService', UserService, 'database');
 bottle.service('GroceryListItemService', GroceryListItemService, 'database');
 bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter', 'wrapError');
 bottle.service(
@@ -83,19 +85,18 @@ bottle.service(
   'wrapError'
 );
 
-bottle.factory('App', ({
-  express,
-  AuthController,
-  UserController,
-  GroceryListItemController,
-}) => new App(
-  express(),
+bottle.factory('App', (container: IDIContainer) => new App(
+  container.express(),
   5000,
-  [bodyParser.json(), cors()],
   [
-    AuthController,
-    UserController,
-    GroceryListItemController,
+    bodyParser.json(),
+    cors(),
+    AuthMiddlewareFactory(container.TokenService)
+  ],
+  [
+    container.AuthController,
+    container.UserController,
+    container.GroceryListItemController,
   ],
   [ErrorMiddleware],
 ));

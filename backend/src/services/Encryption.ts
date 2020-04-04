@@ -1,10 +1,10 @@
-import IBaseEncryption from '../interfaces/IBaseEncryption';
+import IEncryptionService from '../interfaces/IEncryptionService';
 
-class EncryptionService implements IBaseEncryption {
+class EncryptionService implements IEncryptionService {
   private saltRounds = 10;
-  private bcrypt;
+  private bcrypt: any;
 
-  constructor(bcrypt) {
+  constructor(bcrypt: any) {
     this.bcrypt = bcrypt;
   }
 

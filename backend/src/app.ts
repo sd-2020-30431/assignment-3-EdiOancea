@@ -1,18 +1,19 @@
 import { Application } from 'express';
+import MiddlewareType from './interfaces/Middleware';
 
 class App {
   private app: Application;
   private port: number;
-  private frontMiddlewares;
-  private controllers;
-  private backMiddlewares;
+  private frontMiddlewares: MiddlewareType[];
+  private controllers: any[];
+  private backMiddlewares: MiddlewareType[];
 
   constructor(
     express: Application,
     port: number,
-    frontMiddlewares: any[],
+    frontMiddlewares: MiddlewareType[],
     controllers: any[],
-    backMiddlewares: any[],
+    backMiddlewares: MiddlewareType[],
   ) {
     this.app = express;
     this.port = port;

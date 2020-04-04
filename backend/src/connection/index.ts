@@ -1,6 +1,6 @@
 import { Model } from 'sequelize';
 
-const connection = (db, Sequelize, sequelize) => {
+const connection = (db: any, Sequelize: any, sequelize: any) => {
   const dbWithoutAssoc = Object.keys(db).reduce((acc, modelName) => ({
     ...acc,
     [modelName]: db[modelName].model,

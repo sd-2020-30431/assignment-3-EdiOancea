@@ -1,9 +1,9 @@
 interface IBaseService {
-  create(body: any): Promise<User>;
-  readOne(id: number): Promise<User>;
-  readAll(): Promise<User[]>;
-  update(body!: any): any;
-  delete(id: number): any;
+  create(userId: string, body: any): Promise<any>;
+  readOne(id: string): Promise<any>;
+  readAll(): Promise<any[]>;
+  update(body: any): any;
+  delete(id: string): any;
 };
 
 export default IBaseService;

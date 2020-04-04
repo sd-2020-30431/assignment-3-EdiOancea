@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import IEncryptionService from '../interfaces/IEncryptionService';
 
-const UserModelFactory = (sequelize: Sequelize, EncryptionService) => {
+const UserModelFactory = (sequelize: Sequelize, EncryptionService: IEncryptionService) => {
   class User extends Model {
     public id!: number;
     public email!: string;
@@ -50,7 +51,7 @@ const UserModelFactory = (sequelize: Sequelize, EncryptionService) => {
     user.email = user.email.toLowerCase();
   });
 
-  const associate = ({ GroceryListItem }) => {
+  const associate = ({ GroceryListItem }: { GroceryListItem: any }) => {
     User.hasMany(GroceryListItem, {
       sourceKey: 'id',
       foreignKey: 'userId',
