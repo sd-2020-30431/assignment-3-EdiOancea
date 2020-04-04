@@ -10,4 +10,5 @@ type FieldType = {
     defaultValue?: string;
   };
   component: React.FC<any>;
+  order?: number;
 };

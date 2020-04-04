@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 
@@ -10,11 +15,11 @@ import APIRequests from '../APIRequests';
 
 export const GlobalContext = React.createContext<{
   token: string;
-  setToken: any;
+  setToken: (token: string) => void;
   items: GroceryListItem[];
-  setItems: any;
+  setItems: Dispatch<SetStateAction<GroceryListItem[]>> | null;
   user: User | null;
-  setUser: any;
+  setUser: Dispatch<SetStateAction<User>> | null;
 }>({
   token: '',
   setToken: null,

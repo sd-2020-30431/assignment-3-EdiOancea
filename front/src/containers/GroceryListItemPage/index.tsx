@@ -21,7 +21,7 @@ const validationSchema = Yup.object<GroceryListItemValidationSchema>().shape({
 });
 
 const hydrateFields = (
-  fields: any,
+  fields: { [key: string]: FieldType },
   defaultValues: any,
 ) => Object.keys(fields).map(key => defaultValues[key] ? {
     ...fields[key],

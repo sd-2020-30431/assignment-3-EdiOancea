@@ -14,7 +14,7 @@ import {
 import Button from '../forms/Button';
 
 type Props = {
-  data: any[];
+  data: GroceryListItem[];
   goToAddGrocery: () => void;
 };
 

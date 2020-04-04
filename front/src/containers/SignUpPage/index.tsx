@@ -84,7 +84,7 @@ const SignUpPage: React.FC<{}> = () => {
 
   useEffect(() => {
     setToken('');
-  }, []);
+  }, [setToken]);
 
   return (
     <SignUpComponent renderForm={renderForm}/>
