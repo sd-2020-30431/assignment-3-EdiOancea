@@ -6,7 +6,8 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true
   },
   "include": [
     "src/**/*.ts"

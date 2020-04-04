@@ -1,14 +1,17 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 
-class GroceryListItemController {
-  public router;
+import IBaseController from '../interfaces/IBaseController';
+import IBaseService from '../interfaces/IBaseService';
+
+class GroceryListItemController implements IBaseController {
+  public router: Router;
   private path = '/groceries';
   private pathOne = '/groceries/:id';
-  private service;
-  private wrapError;
+  private groceryListItemService: IBaseService;
+  private wrapError: any;
 
-  constructor(service, router, wrapError) {
-    this.service = service;
+  constructor(groceryListItemService: IBaseService, router: Router, wrapError: any) {
+    this.groceryListItemService = groceryListItemService;
     this.router = router;
     this.wrapError = wrapError;
     this.initRoutes();
@@ -24,32 +27,34 @@ class GroceryListItemController {
   }
 
   private create = async (req: Request, res: Response) => {
-    const { body } = req;
+    // @ts-ignore
+    const { body, userId } = req;
 
-    res.json(await this.service.create(body));
+    res.json(await this.groceryListItemService.create(userId, body));
   }
 
   private get = async (req: Request, res: Response) => {
-    const { params: { id } } = req;
+    // @ts-ignore
+    const { params: { id }, userId } = req;
 
-    res.json(await this.service.readOne(id));
+    res.json(await this.groceryListItemService.readOne(id));
   }
 
   private getAll = async (req: Request, res: Response) => {
-    res.json(await this.service.readAll());
+    res.json(await this.groceryListItemService.readAll());
   }
 
   private delete = async (req: Request, res: Response) => {
-    const { params: { id }  } = req;
+    const { params: { id } } = req;
 
-    res.json(await this.service.delete(id))
+    res.json(await this.groceryListItemService.delete(id));
   }
 
   private update = async (req: Request, res: Response) => {
     const { params: { id }, body } = req;
 
-    res.json(await this.service.update({ ...body, id }));
+    res.json(await this.groceryListItemService.update({ ...body, id }));
   }
 }
 
-export default GroceryListItemController
+export default GroceryListItemController;

@@ -1,34 +1,33 @@
 import IBaseService from '../interfaces/IBaseService';
+import IDatabase from '../interfaces/IDatabase';
 
 class GroceryListItemService implements IBaseService {
-  private database;
+  private database: IDatabase;
 
-  constructor(database) {
+  constructor(database: IDatabase) {
     this.database = database;
   }
 
-  async create(body: {
-    name: string,
-    quantity: number,
-    calories: number,
-    userId: number,
-    consumptionDate: Date,
-    purchaseDate: Date,
-    expirationDate: Date,
-  }) {
+  async create(
+    userId: string,
+    body: {
+      name: string,
+      quantity: number,
+      calories: number,
+      consumptionDate: Date,
+      purchaseDate: Date,
+      expirationDate: Date,
+    }
+  ) {
     const { GroceryListItem, User } = this.database;
     const {
       name,
       quantity,
       calories,
-      userId,
       consumptionDate,
       purchaseDate,
       expirationDate,
     } = body;
-    if (!User.findByPk(userId)) {
-      return null;
-    }
 
     const { id } = await GroceryListItem.create({
       name,
@@ -43,7 +42,7 @@ class GroceryListItemService implements IBaseService {
     return await GroceryListItem.findByPk(id);
   }
 
-  async readOne(id: number) {
+  async readOne(id: string) {
     const { GroceryListItem } = this.database;
 
     return await GroceryListItem.findByPk(id);
@@ -56,7 +55,7 @@ class GroceryListItemService implements IBaseService {
   }
 
   async update(body: {
-    id: number,
+    id: string,
     name: string,
     quantity: number,
     calories: number,
@@ -85,16 +84,12 @@ class GroceryListItemService implements IBaseService {
       consumptionDate,
       purchaseDate,
       expirationDate,
-    }, {
-      where: {
-        id,
-      },
-    });
+    }, { where: { id } });
 
     return await this.readOne(id);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const { GroceryListItem } = this.database;
     const deletedGroceryListItem = await this.readOne(id);
 

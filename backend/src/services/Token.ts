@@ -1,7 +1,9 @@
-class TokenService {
-  private jwt;
+import ITokenService from '../interfaces/ITokenService';
 
-  constructor(jwt) {
+class TokenService implements ITokenService {
+  private jwt: any;
+
+  constructor(jwt: any) {
     this.jwt = jwt;
   }
 
@@ -10,7 +12,7 @@ class TokenService {
   }
 
   public verifyToken = (token: string): string => {
-    return this.jwt.verify(token, process.env.SECRET_KEY);
+    return token ? this.jwt.verify(token, process.env.SECRET_KEY): '';
   }
 }
 
