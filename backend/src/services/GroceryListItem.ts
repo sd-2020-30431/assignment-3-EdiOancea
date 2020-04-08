@@ -20,7 +20,7 @@ class GroceryListItemService implements IBaseService {
     }
   ) {
     try {
-      const { GroceryListItem, User } = this.database;
+      const { GroceryListItem } = this.database;
       const { id } = await GroceryListItem.create({ ...body, userId });
 
       return await GroceryListItem.findByPk(id);
@@ -64,7 +64,6 @@ class GroceryListItemService implements IBaseService {
         errors: e.errors.map((error: any) => error.message),
       }
     }
-
   }
 
   async delete(id: string) {

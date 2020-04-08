@@ -18,7 +18,6 @@ import AuthService from '../services/Auth';
 import UserService from '../services/User';
 import GroceryListItemService from '../services/GroceryListItem';
 import EncryptionService from '../services/Encryption';
-import wrapError from '../services/WrapError';
 import AuthMiddlewareFactory from '../middlewares/Auth';
 
 const bottle = new Bottle();
@@ -28,7 +27,6 @@ import IDIContainer from '../interfaces/IDIContainer';
 
 bottle.factory('bcrypt', () => bcrypt);
 bottle.factory('express', () => express);
-bottle.factory('wrapError', () => wrapError);
 bottle.factory('ExpressRouter', (container: IDIContainer) => container.express.Router());
 bottle.factory('jwt', () => jwt);
 bottle.factory('sequelize', () => new Sequelize(
@@ -68,20 +66,18 @@ bottle.service('EncryptionService', EncryptionService, 'bcrypt');
 bottle.service('AuthService', AuthService, 'database', 'EncryptionService', 'TokenService');
 bottle.service('UserService', UserService, 'database');
 bottle.service('GroceryListItemService', GroceryListItemService, 'database');
-bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter', 'wrapError');
+bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter');
 bottle.service(
   'GroceryListItemController',
   GroceryListItemController,
   'GroceryListItemService',
   'ExpressRouter',
-  'wrapError'
 )
 bottle.service(
   'UserController',
   UserController,
   'UserService',
   'ExpressRouter',
-  'wrapError'
 );
 
 bottle.factory('App', (container: IDIContainer) => new App(

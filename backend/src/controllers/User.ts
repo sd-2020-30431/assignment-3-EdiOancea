@@ -8,19 +8,17 @@ class UserController implements IBaseController {
   protected path = '/users';
   protected pathMe = '/users/me';
   protected userService: IUserService;
-  protected wrapError: any;
 
-  constructor(userService: IUserService, router: Router, wrapError: any) {
+  constructor(userService: IUserService, router: Router) {
     this.userService = userService;
     this.router = router;
-    this.wrapError = wrapError;
     this.initRoutes();
   }
 
   protected initRoutes() {
     this.router
-      .post(this.path, this.wrapError(this.create))
-      .get(this.pathMe, this.wrapError(this.getMe));
+      .post(this.path, this.create)
+      .get(this.pathMe, this.getMe);
   }
 
   protected create = async (req: Request, res: Response) => {
