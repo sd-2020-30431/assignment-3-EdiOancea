@@ -8,22 +8,20 @@ class GroceryListItemController implements IBaseController {
   private path = '/groceries';
   private pathOne = '/groceries/:id';
   private groceryListItemService: IBaseService;
-  private wrapError: any;
 
-  constructor(groceryListItemService: IBaseService, router: Router, wrapError: any) {
+  constructor(groceryListItemService: IBaseService, router: Router) {
     this.groceryListItemService = groceryListItemService;
     this.router = router;
-    this.wrapError = wrapError;
     this.initRoutes();
   }
 
   private initRoutes() {
     this.router
-      .post(this.path, this.wrapError(this.create))
-      .get(this.path, this.wrapError(this.getAll))
-      .get(this.pathOne, this.wrapError(this.get))
-      .put(this.pathOne, this.wrapError(this.update))
-      .delete(this.pathOne, this.wrapError(this.delete));
+      .post(this.path, this.create)
+      .get(this.path, this.getAll)
+      .get(this.pathOne, this.get)
+      .put(this.pathOne, this.update)
+      .delete(this.pathOne, this.delete);
   }
 
   private create = async (req: Request, res: Response) => {
@@ -54,6 +52,10 @@ class GroceryListItemController implements IBaseController {
 
     res.json(await this.groceryListItemService.update({ ...body, id }));
   }
+
+  // private report = async (req: Request, res: Response) => {
+  //   res.json(await this.groceryListItemService.getWeeklyData());
+  // }
 }
 
 export default GroceryListItemController;

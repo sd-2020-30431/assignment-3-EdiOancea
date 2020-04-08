@@ -20,7 +20,7 @@ class GroceryListItemService implements IBaseService {
     }
   ) {
     try {
-      const { GroceryListItem, User } = this.database;
+      const { GroceryListItem } = this.database;
       const { id } = await GroceryListItem.create({ ...body, userId });
 
       return await GroceryListItem.findByPk(id);
@@ -64,7 +64,6 @@ class GroceryListItemService implements IBaseService {
         errors: e.errors.map((error: any) => error.message),
       }
     }
-
   }
 
   async delete(id: string) {
@@ -75,6 +74,18 @@ class GroceryListItemService implements IBaseService {
 
     return deletedGroceryListItem;
   }
+
+  // async report() {
+  //   const { GroceryListItem, Sequelize: { Op }, } = this.database;
+  //
+  //   return await GroceryListItem.findAll({
+  //     where: {
+  //       purchaseDate: {
+  //         [Op.lt]: ((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000),
+  //       },
+  //     },
+  //   });
+  // }
 };
 
 export default GroceryListItemService;

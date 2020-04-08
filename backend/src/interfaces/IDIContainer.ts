@@ -1,7 +1,6 @@
 interface IDIContainer {
   bcrypt: any;
   express: any;
-  wrapError: any;
   ExpressRouter: any;
   jwt: any;
   sequelize: any;
