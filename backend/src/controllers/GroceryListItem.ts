@@ -52,10 +52,6 @@ class GroceryListItemController implements IBaseController {
 
     res.json(await this.groceryListItemService.update({ ...body, id }));
   }
-
-  // private report = async (req: Request, res: Response) => {
-  //   res.json(await this.groceryListItemService.getWeeklyData());
-  // }
 }
 
 export default GroceryListItemController;

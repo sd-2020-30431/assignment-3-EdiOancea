@@ -74,18 +74,6 @@ class GroceryListItemService implements IBaseService {
 
     return deletedGroceryListItem;
   }
-
-  // async report() {
-  //   const { GroceryListItem, Sequelize: { Op }, } = this.database;
-  //
-  //   return await GroceryListItem.findAll({
-  //     where: {
-  //       purchaseDate: {
-  //         [Op.lt]: ((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000),
-  //       },
-  //     },
-  //   });
-  // }
 };
 
 export default GroceryListItemService;
