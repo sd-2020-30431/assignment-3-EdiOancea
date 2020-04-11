@@ -8,16 +8,19 @@ const Bottle = require('bottlejs');
 
 import App from '../app';
 import connection from '../connection';
+import { WeeklyReportFactory, MonthlyReportFactory } from '../factories/Report';
 import UserModelFactory from '../models/User';
 import GroceryListItemModelFactory from '../models/GroceryListItem';
 import AuthController from '../controllers/Auth';
 import UserController from '../controllers/User';
+import ReportController from '../controllers/Report';
 import GroceryListItemController from '../controllers/GroceryListItem';
 import TokenService from '../services/Token';
 import AuthService from '../services/Auth';
 import UserService from '../services/User';
 import GroceryListItemService from '../services/GroceryListItem';
 import EncryptionService from '../services/Encryption';
+import ReportService from '../services/Report';
 import AuthMiddlewareFactory from '../middlewares/Auth';
 
 const bottle = new Bottle();
@@ -61,12 +64,33 @@ bottle.factory(
   )
 );
 
+bottle.service('WeeklyReportFactory', WeeklyReportFactory);
+bottle.service('MonthlyReportFactory', MonthlyReportFactory);
 bottle.service('TokenService', TokenService, 'jwt')
 bottle.service('EncryptionService', EncryptionService, 'bcrypt');
-bottle.service('AuthService', AuthService, 'database', 'EncryptionService', 'TokenService');
+bottle.service(
+  'ReportService',
+  ReportService,
+  'database',
+  'WeeklyReportFactory',
+  'MonthlyReportFactory',
+);
+bottle.service(
+  'AuthService',
+  AuthService,
+  'database',
+  'EncryptionService',
+  'TokenService',
+);
 bottle.service('UserService', UserService, 'database');
 bottle.service('GroceryListItemService', GroceryListItemService, 'database');
 bottle.service('AuthController', AuthController, 'AuthService', 'ExpressRouter');
+bottle.service(
+  'ReportController',
+  ReportController,
+  'ReportService',
+  'ExpressRouter',
+);
 bottle.service(
   'GroceryListItemController',
   GroceryListItemController,
@@ -79,7 +103,6 @@ bottle.service(
   'UserService',
   'ExpressRouter',
 );
-
 bottle.factory('App', (container: IDIContainer) => new App(
   container.express(),
   5000,
@@ -92,6 +115,7 @@ bottle.factory('App', (container: IDIContainer) => new App(
     container.AuthController,
     container.UserController,
     container.GroceryListItemController,
+    container.ReportController,
   ],
   []
 ));
