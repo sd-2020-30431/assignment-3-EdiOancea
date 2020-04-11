@@ -17,6 +17,7 @@ import Button from '../forms/Button';
 type Props = {
   data: GroceryListItem[];
   goToAddGrocery: () => void;
+  goToReports: () => void;
 };
 
 const useStyles = makeStyles({
@@ -25,7 +26,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
+const Dashboard: React.FC<Props> = ({
+  data,
+  goToAddGrocery,
+  goToReports,
+}) => {
   const classes = useStyles();
 
   return (
@@ -74,6 +79,9 @@ const Dashboard: React.FC<Props> = ({ data, goToAddGrocery }) => {
       </TableContainer>
       <Button onClick={goToAddGrocery} type="button">
         Add grocery item
+      </Button>
+      <Button onClick={goToReports} type="button">
+        See reports
       </Button>
     </Container>
   );

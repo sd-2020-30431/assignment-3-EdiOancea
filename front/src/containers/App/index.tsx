@@ -12,6 +12,7 @@ import SignInPage from '../SignInPage';
 import SignUpPage from '../SignUpPage';
 import Dashboard from '../Dashboard';
 import GroceryListItemPage from '../GroceryListItemPage';
+import ReportsPage from '../ReportsPage';
 import APIRequests from '../APIRequests';
 
 export const GlobalContext = React.createContext<{
@@ -74,6 +75,9 @@ const App: React.FC<{}> = () => {
           </Route>
           <ProtectedRoute path="/upsert-grocery/:id?">
             <GroceryListItemPage />
+          </ProtectedRoute>
+          <ProtectedRoute path="/reports">
+            <ReportsPage />
           </ProtectedRoute>
           <ProtectedRoute path="/">
             <Dashboard />

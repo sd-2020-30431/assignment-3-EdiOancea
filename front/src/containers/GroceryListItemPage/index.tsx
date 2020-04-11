@@ -99,7 +99,7 @@ const fields = {
       label: 'Purchase Date',
       name: 'purchaseDate',
       autoComplete: 'nope',
-      defaultValue: dayjs().format('DD/MM/YYYY'),
+      defaultValue: dayjs().format('MM/DD/YYYY'),
     },
     component: DateField,
     order: 4,
@@ -110,7 +110,7 @@ const fields = {
       label: 'Expiration Date',
       name: 'expirationDate',
       autoComplete: 'nope',
-      defaultValue: dayjs().format('DD/MM/YYYY'),
+      defaultValue: dayjs().format('MM/DD/YYYY'),
     },
     component: DateField,
     order: 5,
@@ -121,7 +121,7 @@ const fields = {
       label: 'Consumption Date',
       name: 'consumptionDate',
       autoComplete: 'nope',
-      defaultValue: dayjs().format('DD/MM/YYYY'),
+      defaultValue: dayjs().format('MM/DD/YYYY'),
     },
     component: DateField,
     order: 6,
@@ -139,13 +139,19 @@ const GroceryListItemPage: React.FC<{}> = () => {
   const onSubmit = async (values: GroceryListItemValidationSchema) => {
     const requestType = id ? 'PUT' : 'POST';
     const url = id ? `/groceries/${id}` : '/groceries';
+
     const response = await APIRequests.request(requestType, url, {
       ...values,
       userId: user.id,
     });
 
     if (response.id) {
-      setItems([...items, response]);
+      if (!id) {
+        setItems([...items, response]);
+      } else {
+        setItems(items.map(item => item.id === response.id ? response : item));
+      }
+
       history.push('/');
     } else {
       setErrors(response.errors);
