@@ -9,10 +9,7 @@ class AuthController implements IBaseController {
   protected path = '/auth';
   protected authService: any;
 
-  constructor(
-    authService: IAuthService,
-    router: Router,
-  ) {
+  constructor(authService: IAuthService, router: Router) {
     this.authService = authService;
     this.router = router;
     this.initRoutes();

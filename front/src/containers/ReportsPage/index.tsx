@@ -6,7 +6,6 @@ import ReportsComponent from '../../components/ReportsPage';
 const Reports: React.FC<{}> = () => {
   const [weeklyReport, setWeeklyReport] = useState<Report | null>(null);
   const [monthlyReport, setMonthlyReport] = useState<Report | null>(null);
-  console.log(weeklyReport, monthlyReport);
 
   useEffect(() => {
     APIRequests.request('GET', '/weekly-report').then((data: Report) => {
