@@ -3,27 +3,37 @@ import MiddlewareType from './interfaces/Middleware';
 
 class App {
   private app: Application;
+  private server: any;
+  private io: any;
   private port: number;
   private frontMiddlewares: MiddlewareType[];
   private controllers: any[];
   private backMiddlewares: MiddlewareType[];
+  private socketHandlers: any[];
 
   constructor(
     express: Application,
+    httpServer: any,
+    io: any,
     port: number,
     frontMiddlewares: MiddlewareType[],
     controllers: any[],
     backMiddlewares: MiddlewareType[],
+    socketHandlers: any[],
   ) {
     this.app = express;
+    this.server = httpServer.createServer(this.app);
+    this.io = io(this.server);
     this.port = port;
 
     this.frontMiddlewares = frontMiddlewares;
     this.controllers = controllers;
     this.backMiddlewares = backMiddlewares;
+    this.socketHandlers = socketHandlers;
     this.useFrontMiddlewares();
     this.useRoutes();
     this.useBackMiddlewares();
+    this.useSockets();
   }
 
   private useFrontMiddlewares() {
@@ -44,8 +54,16 @@ class App {
     });
   }
 
+  private useSockets() {
+    this.io.on('connection', (socket: any) => {
+      this.socketHandlers.forEach(socketHandler => {
+        socketHandler.handleSocket(socket);
+      });
+    });
+  }
+
   public listen() {
-    return this.app.listen(this.port, () => {
+    return this.server.listen(this.port, () => {
       console.log(`App listening on the http://localhost:${this.port}`);
     });
   }

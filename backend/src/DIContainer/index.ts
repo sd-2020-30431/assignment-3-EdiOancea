@@ -4,6 +4,8 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as jwt from 'jsonwebtoken';
 import * as cors from 'cors';
+import * as http from 'http';
+import * as io from 'socket.io';
 const Bottle = require('bottlejs');
 
 import App from '../app';
@@ -15,6 +17,7 @@ import AuthController from '../controllers/Auth';
 import UserController from '../controllers/User';
 import ReportController from '../controllers/Report';
 import GroceryListItemController from '../controllers/GroceryListItem';
+import NotificationController from '../controllers/Notification';
 import TokenService from '../services/Token';
 import AuthService from '../services/Auth';
 import UserService from '../services/User';
@@ -103,8 +106,11 @@ bottle.service(
   'UserService',
   'ExpressRouter',
 );
+bottle.service('NotificationController', NotificationController, 'GroceryListItemService');
 bottle.factory('App', (container: IDIContainer) => new App(
   container.express(),
+  http,
+  io,
   5000,
   [
     bodyParser.json(),
@@ -117,7 +123,8 @@ bottle.factory('App', (container: IDIContainer) => new App(
     container.GroceryListItemController,
     container.ReportController,
   ],
-  []
+  [],
+  [container.NotificationController]
 ));
 
 export default bottle;
