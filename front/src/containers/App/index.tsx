@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
+import socketIOClient from 'socket.io-client';
 
 import ProtectedRoute from '../ProtectedRoute';
 import SignInPage from '../SignInPage';
@@ -48,6 +49,8 @@ const App: React.FC<{}> = () => {
 
   useEffect(() => {
     setToken(localStorage.getItem('token'));
+    const socket = socketIOClient('http://localhost:5000');
+    socket.on('notification', (data: any) => console.log(data));
   }, []);
 
   return (
