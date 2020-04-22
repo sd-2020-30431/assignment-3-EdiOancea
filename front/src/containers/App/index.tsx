@@ -50,7 +50,7 @@ const App: React.FC<{}> = () => {
   useEffect(() => {
     setToken(localStorage.getItem('token'));
     const socket = socketIOClient('http://localhost:5000');
-    socket.on('notification', (data: any) => console.log(data));
+    socket.on('notification', (data: any) => setTimeout(() => alert(data.message), 2000));
   }, []);
 
   return (

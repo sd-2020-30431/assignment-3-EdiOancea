@@ -71,7 +71,7 @@ const SignUpPage: React.FC<{}> = () => {
 
   const onSubmit = async (values: SignUpValidationSchema) => {
     const { errors } = await APIRequests.request('POST', '/users', values);
-
+    
     if (errors) {
       setErrors(errors);
     } else {
