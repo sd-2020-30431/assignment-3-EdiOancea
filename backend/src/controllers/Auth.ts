@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 
-import MiddlewareType from '../interfaces/Middleware';
 import IBaseController from '../interfaces/IBaseController';
 import IAuthService from '../interfaces/IAuthService';
 

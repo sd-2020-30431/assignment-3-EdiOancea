@@ -15,6 +15,7 @@ interface IDIContainer {
   GroceryListItemController: any;
   UserController: any;
   ReportController: any;
+  NotificationController: any;
   App: any;
 }
 

@@ -3,9 +3,25 @@ import IDatabase from '../interfaces/IDatabase';
 
 class GroceryListItemService implements IBaseService {
   private database: IDatabase;
+  private observers: any;
 
   constructor(database: IDatabase) {
     this.database = database;
+    this.observers = {};
+  }
+
+  public addObserver = (key: string, observer: any) => {
+    this.observers[key] = observer;
+  }
+
+  public removeObserver = (key: string) => {
+    this.observers[key] = null;
+  }
+
+  private notifyObservers = (value: any) => {
+    Object.values(this.observers).forEach((observer: any) => {
+      observer.notify(value);
+    });
   }
 
   async create(
@@ -22,8 +38,10 @@ class GroceryListItemService implements IBaseService {
     try {
       const { GroceryListItem } = this.database;
       const { id } = await GroceryListItem.create({ ...body, userId });
+      const groceryListItem = await this.readOne(id);
+      this.notifyObservers(groceryListItem);
 
-      return await GroceryListItem.findByPk(id);
+      return groceryListItem;
     } catch (e) {
       return {
         errors: e.errors.map((error: any) => error.message),
@@ -57,8 +75,10 @@ class GroceryListItemService implements IBaseService {
       const { GroceryListItem } = this.database;
       const { id } = body;
       await GroceryListItem.update(body, { where: { id } });
+      const groceryListItem = await this.readOne(id);
+      this.notifyObservers(groceryListItem);
 
-      return await this.readOne(id);
+      return groceryListItem;
     } catch (e) {
       return {
         errors: e.errors.map((error: any) => error.message),

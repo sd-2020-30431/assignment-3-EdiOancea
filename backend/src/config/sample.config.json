@@ -7,7 +7,7 @@
     "dialect": "",
     "operatorsAliases": false
   },
-  "development": {
+  "test": {
     "username": "",
     "password": null,
     "database": "",
@@ -15,7 +15,7 @@
     "dialect": "",
     "operatorsAliases": false
   },
-  "development": {
+  "production": {
     "username": "",
     "password": null,
     "database": "",
