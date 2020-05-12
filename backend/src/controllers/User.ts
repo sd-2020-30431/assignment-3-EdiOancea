@@ -1,15 +1,12 @@
 import { Request, Response, Router } from 'express';
 
-import IBaseController from '../interfaces/IBaseController';
-import IUserService from '../interfaces/IUserService';
-
-class UserController implements IBaseController {
+class UserController {
   public router: Router;
   protected path = '/users';
   protected pathMe = '/users/me';
-  protected userService: IUserService;
+  protected userService;
 
-  constructor(userService: IUserService, router: Router) {
+  constructor(userService, router: Router) {
     this.userService = userService;
     this.router = router;
     this.initRoutes();

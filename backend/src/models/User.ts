@@ -1,7 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import IEncryptionService from '../interfaces/IEncryptionService';
 
-const UserModelFactory = (sequelize: Sequelize, EncryptionService: IEncryptionService) => {
+const UserModelFactory = (sequelize: Sequelize, EncryptionService) => {
   class User extends Model {
     public id!: number;
     public email!: string;

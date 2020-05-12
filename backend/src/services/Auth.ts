@@ -1,19 +1,9 @@
-import IAuthService from '../interfaces/IAuthService';
-import IEncryptionService from '../interfaces/IEncryptionService';
-import ITokenService from '../interfaces/ITokenService';
-import IDatabase from '../interfaces/IDatabase';
+class AuthService {
+  private database;
+  private encryptionService;
+  private tokenService;
 
-class AuthService implements IAuthService {
-  private exclude = ['password'];
-  private database: IDatabase;
-  private encryptionService: IEncryptionService;
-  private tokenService: ITokenService;
-
-  constructor(
-    database: IDatabase,
-    encryptionService: IEncryptionService,
-    tokenService: ITokenService
-  ) {
+  constructor(database, encryptionService, tokenService) {
     this.database = database;
     this.encryptionService = encryptionService;
     this.tokenService = tokenService;

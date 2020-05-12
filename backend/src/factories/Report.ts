@@ -4,10 +4,10 @@ import { DayType, AbstractReport, AbstractReportFactory } from '../interfaces/Re
 
 class Report implements AbstractReport {
   public days: DayType[];
-  protected startOfPeriod: any;
-  protected endOfPeriod: any;
+  protected startOfPeriod;
+  protected endOfPeriod;
 
-  constructor(items: any[], type: 'week' | 'month') {
+  constructor(items, type: 'week' | 'month') {
     this.startOfPeriod = dayjs().startOf(type).add(3, 'hour');
     this.endOfPeriod = dayjs().endOf(type).add(3, 'hour');
     this.days = items.reduce(this.handleItem, this.generateTemplate());
@@ -29,7 +29,7 @@ class Report implements AbstractReport {
     }));
   }
 
-  protected handleItem = (acc: any, item: any) => {
+  protected handleItem = (acc, item) => {
     const {
       quantity,
       calories,
@@ -44,7 +44,7 @@ class Report implements AbstractReport {
     const daysDifference = cDate.diff(pDate, 'day') + 1;
     const caloriesPerDay = Math.floor(totalCalories / daysDifference);
 
-    return acc.map((item: any) => {
+    return acc.map(item => {
       const cItemDay = dayjs(item.day).add(3, 'hour');
 
       if (pDate.isAfter(cItemDay, 'day') || cDate.isBefore(cItemDay, 'day')) {
@@ -67,25 +67,25 @@ class Report implements AbstractReport {
 }
 
 class WeeklyReport extends Report {
-  constructor(items: any[]) {
+  constructor(items) {
     super(items, 'week');
   }
 }
 
 class MonthlyReport extends Report {
-  constructor(items: any[]) {
+  constructor(items) {
     super(items, 'month');
   }
 }
 
 export class WeeklyReportFactory implements AbstractReportFactory {
-  public createReport(items: any[]) : AbstractReport {
+  public createReport(items) : AbstractReport {
     return new WeeklyReport(items);
   }
 }
 
 export class MonthlyReportFactory implements AbstractReportFactory {
-  public createReport(items: any[]) : AbstractReport {
+  public createReport(items) : AbstractReport {
     return new MonthlyReport(items);
   }
 }

@@ -1,15 +1,12 @@
 import { Request, Response, Router } from 'express';
 
-import IBaseController from '../interfaces/IBaseController';
-import IBaseService from '../interfaces/IBaseService';
-
-class GroceryListItemController implements IBaseController {
+class GroceryListItemController {
   public router: Router;
   private path = '/groceries';
   private pathOne = '/groceries/:id';
-  private groceryListItemService: IBaseService;
+  private groceryListItemService;
 
-  constructor(groceryListItemService: IBaseService, router: Router) {
+  constructor(groceryListItemService, router: Router) {
     this.groceryListItemService = groceryListItemService;
     this.router = router;
     this.initRoutes();

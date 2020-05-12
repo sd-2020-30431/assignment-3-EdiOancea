@@ -1,19 +1,19 @@
 import * as dayjs from 'dayjs';
 
 class NotificationController {
-  private socket: any;
-  private groceryListItemService: any;
+  private socket;
+  private groceryListItemService;
 
-  constructor(groceryListItemService: any) {
+  constructor(groceryListItemService) {
     this.groceryListItemService = groceryListItemService;
   }
 
-  public handleSocket = (socket: any) => {
+  public handleSocket = socket => {
     this.socket = socket;
     this.groceryListItemService.addObserver('notifications', this);
   }
 
-  public notify(groceryListItem: any) {
+  public notify(groceryListItem) {
     const exp = dayjs(groceryListItem.expirationDate);
     const cons = dayjs(groceryListItem.consumptionDate);
     const future = dayjs().add(5, 'day');

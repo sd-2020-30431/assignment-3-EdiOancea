@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 
-import ITokenService from '../interfaces/ITokenService';
-
-const AuthMiddlewareFactory = (tokenService: any) => (
-  (req: Request, res: Response, next: any) => {
+const AuthMiddlewareFactory = tokenService => (
+  (req: Request, res: Response, next) => {
     if (req.header('Authorization')) {
       const token = req.header('Authorization').slice(7);
       const id = tokenService.verifyToken(token);

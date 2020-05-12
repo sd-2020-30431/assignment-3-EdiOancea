@@ -1,25 +1,24 @@
 import { Application } from 'express';
-import MiddlewareType from './interfaces/Middleware';
 
 class App {
   private app: Application;
-  private server: any;
-  private io: any;
+  private server;
+  private io;
   private port: number;
-  private frontMiddlewares: MiddlewareType[];
-  private controllers: any[];
-  private backMiddlewares: MiddlewareType[];
-  private socketHandlers: any[];
+  private frontMiddlewares;
+  private controllers;
+  private backMiddlewares;
+  private socketHandlers;
 
   constructor(
     express: Application,
-    httpServer: any,
-    io: any,
+    httpServer,
+    io,
     port: number,
-    frontMiddlewares: MiddlewareType[],
-    controllers: any[],
-    backMiddlewares: MiddlewareType[],
-    socketHandlers: any[],
+    frontMiddlewares,
+    controllers,
+    backMiddlewares,
+    socketHandlers,
   ) {
     this.app = express;
     this.server = httpServer.createServer(this.app);
@@ -55,7 +54,7 @@ class App {
   }
 
   private useSockets() {
-    this.io.on('connection', (socket: any) => {
+    this.io.on('connection', socket => {
       this.socketHandlers.forEach(socketHandler => {
         socketHandler.handleSocket(socket);
       });

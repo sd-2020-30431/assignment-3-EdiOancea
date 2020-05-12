@@ -29,11 +29,9 @@ import AuthMiddlewareFactory from '../middlewares/Auth';
 const bottle = new Bottle();
 const env = (process.env.NODE_ENV || 'development').toUpperCase();
 
-import IDIContainer from '../interfaces/IDIContainer';
-
 bottle.factory('bcrypt', () => bcrypt);
 bottle.factory('express', () => express);
-bottle.factory('ExpressRouter', (container: IDIContainer) => container.express.Router());
+bottle.factory('ExpressRouter', container => container.express.Router());
 bottle.factory('jwt', () => jwt);
 bottle.factory('sequelize', () => new Sequelize(
   process.env[`DB_NAME_${env}`],
@@ -46,18 +44,18 @@ bottle.factory('sequelize', () => new Sequelize(
 ));
 bottle.factory(
   'GroceryListItemModel',
-  (container: IDIContainer) => GroceryListItemModelFactory(container.sequelize)
+  container => GroceryListItemModelFactory(container.sequelize)
 );
 bottle.factory(
   'UserModel',
-  (container: IDIContainer) => UserModelFactory(
+  container => UserModelFactory(
     container.sequelize,
     container.EncryptionService
   )
 );
 bottle.factory(
   'database',
-  (container: IDIContainer) => connection(
+  container => connection(
     {
       User: container.UserModel,
       GroceryListItem: container.GroceryListItemModel,
@@ -107,7 +105,7 @@ bottle.service(
   'ExpressRouter',
 );
 bottle.service('NotificationController', NotificationController, 'GroceryListItemService');
-bottle.factory('App', (container: IDIContainer) => new App(
+bottle.factory('App', container => new App(
   container.express(),
   http,
   io,

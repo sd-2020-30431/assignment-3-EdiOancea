@@ -1,16 +1,13 @@
-import IBaseService from '../interfaces/IBaseService';
-import IDatabase from '../interfaces/IDatabase';
+class GroceryListItemService {
+  private database;
+  private observers;
 
-class GroceryListItemService implements IBaseService {
-  private database: IDatabase;
-  private observers: any;
-
-  constructor(database: IDatabase) {
+  constructor(database) {
     this.database = database;
     this.observers = {};
   }
 
-  public addObserver = (key: string, observer: any) => {
+  public addObserver = (key: string, observer) => {
     this.observers[key] = observer;
   }
 
@@ -18,7 +15,7 @@ class GroceryListItemService implements IBaseService {
     this.observers[key] = null;
   }
 
-  private notifyObservers = (value: any) => {
+  private notifyObservers = value => {
     Object.values(this.observers).forEach((observer: any) => {
       observer.notify(value);
     });
@@ -44,7 +41,7 @@ class GroceryListItemService implements IBaseService {
       return groceryListItem;
     } catch (e) {
       return {
-        errors: e.errors.map((error: any) => error.message),
+        errors: e.errors.map(error => error.message),
       }
     }
   }
@@ -81,7 +78,7 @@ class GroceryListItemService implements IBaseService {
       return groceryListItem;
     } catch (e) {
       return {
-        errors: e.errors.map((error: any) => error.message),
+        errors: e.errors.map(error => error.message),
       }
     }
   }
