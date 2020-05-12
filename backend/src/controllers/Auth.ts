@@ -1,14 +1,11 @@
 import { Request, Response, Router } from 'express';
 
-import IBaseController from '../interfaces/IBaseController';
-import IAuthService from '../interfaces/IAuthService';
-
-class AuthController implements IBaseController {
+class AuthController {
   public router: Router;
   protected path = '/auth';
-  protected authService: any;
+  protected authService;
 
-  constructor(authService: IAuthService, router: Router) {
+  constructor(authService, router: Router) {
     this.authService = authService;
     this.router = router;
     this.initRoutes();

@@ -1,13 +1,12 @@
-import IDatabase from '../interfaces/IDatabase';
 import { AbstractReportFactory } from '../interfaces/Report';
 
 class ReportService {
-  private database: IDatabase;
+  private database;
   private weeklyReportFactory: AbstractReportFactory;
   private monthlyReportFactory: AbstractReportFactory;
 
   constructor(
-    database: IDatabase,
+    database,
     weeklyReportFactory: AbstractReportFactory,
     monthlyReportFactory: AbstractReportFactory,
   ) {
@@ -16,7 +15,7 @@ class ReportService {
     this.monthlyReportFactory = monthlyReportFactory;
   }
 
-  private getItems = async (id: number) : Promise<any[]> => {
+  private getItems = async (id: number) => {
     const { GroceryListItem } = this.database;
 
     return await GroceryListItem.findAll({

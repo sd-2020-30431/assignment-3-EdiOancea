@@ -1,6 +1,4 @@
-import IEncryptionService from '../interfaces/IEncryptionService';
-
-class EncryptionService implements IEncryptionService {
+class EncryptionService {
   private saltRounds = 10;
   private bcrypt: any;
 

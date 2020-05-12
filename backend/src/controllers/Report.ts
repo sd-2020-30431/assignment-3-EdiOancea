@@ -1,12 +1,10 @@
 import { Request, Response, Router } from 'express';
 
-import IBaseService from '../interfaces/IBaseService';
-
 class ReportController {
   public router: Router;
-  private reportService: any;
+  private reportService;
 
-  constructor(reportService: any, router: Router) {
+  constructor(reportService, router: Router) {
     this.reportService = reportService;
     this.router = router;
     this.initRoutes();

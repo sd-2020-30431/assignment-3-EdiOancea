@@ -1,11 +1,8 @@
-import IUserService from '../interfaces/IUserService';
-import IDatabase from '../interfaces/IDatabase';
-
-class UserService implements IUserService {
+class UserService {
   private exclude = ['password'];
-  private database: IDatabase;
+  private database;
 
-  constructor(database: IDatabase) {
+  constructor(database) {
     this.database = database;
   }
 

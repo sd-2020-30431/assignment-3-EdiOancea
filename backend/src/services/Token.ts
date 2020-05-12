@@ -1,9 +1,7 @@
-import ITokenService from '../interfaces/ITokenService';
+class TokenService {
+  private jwt;
 
-class TokenService implements ITokenService {
-  private jwt: any;
-
-  constructor(jwt: any) {
+  constructor(jwt) {
     this.jwt = jwt;
   }
 
