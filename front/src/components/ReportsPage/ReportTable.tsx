@@ -42,8 +42,9 @@ const ReportTable: React.FC<Props> = ({ days, title }) => {
             day,
             calories,
             wastedCalories,
+            color,
           }: Day) => (
-            <TableRow key={day}>
+            <TableRow key={day} style={{ backgroundColor: color }}>
               <TableCell component="th" scope="row">
                 {day}
               </TableCell>

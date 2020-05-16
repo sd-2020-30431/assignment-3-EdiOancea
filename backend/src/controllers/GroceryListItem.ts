@@ -4,10 +4,10 @@ class GroceryListItemController {
   public router: Router;
   private path = '/groceries';
   private pathOne = '/groceries/:id';
-  private groceryListItemService;
+  private Mediator;
 
-  constructor(groceryListItemService, router: Router) {
-    this.groceryListItemService = groceryListItemService;
+  constructor(Mediator, router: Router) {
+    this.Mediator = Mediator;
     this.router = router;
     this.initRoutes();
   }
@@ -15,7 +15,6 @@ class GroceryListItemController {
   private initRoutes() {
     this.router
       .post(this.path, this.create)
-      .get(this.path, this.getAll)
       .get(this.pathOne, this.get)
       .put(this.pathOne, this.update)
       .delete(this.pathOne, this.delete);
@@ -25,29 +24,25 @@ class GroceryListItemController {
     // @ts-ignore
     const { body, userId } = req;
 
-    res.json(await this.groceryListItemService.create(userId, body));
+    res.json(await this.Mediator.handle('createGroceryListItem', userId, body));
   }
 
   private get = async (req: Request, res: Response) => {
     const { params: { id } } = req;
 
-    res.json(await this.groceryListItemService.readOne(id));
-  }
-
-  private getAll = async (req: Request, res: Response) => {
-    res.json(await this.groceryListItemService.readAll());
+    res.json(await this.Mediator.handle('getGroceryListItem', id));
   }
 
   private delete = async (req: Request, res: Response) => {
     const { params: { id } } = req;
 
-    res.json(await this.groceryListItemService.delete(id));
+    res.json(await this.Mediator.handle('deleteGroceryListItem', id));
   }
 
   private update = async (req: Request, res: Response) => {
     const { params: { id }, body } = req;
 
-    res.json(await this.groceryListItemService.update({ ...body, id }));
+    res.json(await this.Mediator.handle('updateGroceryListItem', { ...body, id }));
   }
 }
 

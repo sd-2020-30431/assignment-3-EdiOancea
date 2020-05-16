@@ -2,15 +2,18 @@ import * as dayjs from 'dayjs';
 
 class NotificationController {
   private socket;
-  private groceryListItemService;
+  private CreateGroceryListItemCommand;
+  private UpdateGroceryListItemCommand;
 
-  constructor(groceryListItemService) {
-    this.groceryListItemService = groceryListItemService;
+  constructor(CreateGroceryListItemCommand, UpdateGroceryListItemCommand) {
+    this.CreateGroceryListItemCommand = CreateGroceryListItemCommand;
+    this.UpdateGroceryListItemCommand = UpdateGroceryListItemCommand;
   }
 
   public handleSocket = socket => {
     this.socket = socket;
-    this.groceryListItemService.addObserver('notifications', this);
+    this.CreateGroceryListItemCommand.addObserver('notifications', this);
+    this.UpdateGroceryListItemCommand.addObserver('notifications', this);
   }
 
   public notify(groceryListItem) {

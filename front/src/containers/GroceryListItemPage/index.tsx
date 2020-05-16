@@ -135,35 +135,42 @@ const GroceryListItemPage: React.FC<{}> = () => {
   const { id } = useParams();
   const { user, items, setItems } = useContext(GlobalContext);
   const buttonText = id ? 'Modify grocery' : 'Add grocery';
-
+  
   const onSubmit = async (values: GroceryListItemValidationSchema) => {
     const requestType = id ? 'PUT' : 'POST';
     const url = id ? `/groceries/${id}` : '/groceries';
 
-    const response = await APIRequests.request(requestType, url, {
-      ...values,
-      userId: user.id,
-    });
+    const { errors, id: createdItemId } = await APIRequests.request(
+      requestType, 
+      url, 
+      { ...values, userId: user.id }
+    ) || {};
 
-    if (response.id) {
-      if (!id) {
-        setItems([...items, response]);
-      } else {
-        setItems(items.map(item => item.id === response.id ? response : item));
-      }
-
-      history.push('/');
-    } else {
-      setErrors(response.errors);
+    if (errors) {
+      return setErrors(errors);
     }
+
+    if (createdItemId) {
+      const createdItem = await APIRequests.request('GET', `/groceries/${createdItemId}`);
+
+      setItems([...items, createdItem]);
+    } else {
+      const updatedItem = await APIRequests.request('GET', `/groceries/${id}`);
+
+      setItems(items.map(item => item.id == id ? updatedItem : item));
+    }
+
+    history.push('/');
   };
   const deleteGrocery = async () => {
-    const response = await APIRequests.request('DELETE', `/groceries/${id}`);
+    const { errors } = await APIRequests.request('DELETE', `/groceries/${id}`) || {};
 
-    if (response.id) {
-      history.push('/');
-      setItems(items.filter(item => item.id !== response.id));
+    if (errors) {
+      return setErrors(errors);
     }
+    
+    setItems(items.filter(item => item.id != id));
+    history.push('/');
   };
   const renderForm: () => React.ReactNode = () => (
     <Form
@@ -186,9 +193,7 @@ const GroceryListItemPage: React.FC<{}> = () => {
 
   useEffect(() => {
     if (id) {
-      APIRequests.request('GET', `/groceries/${id}`).then(res => {
-        setDefaultValues(res);
-      });
+      APIRequests.request('GET', `/groceries/${id}`).then(setDefaultValues);
     }
   }, [id]);
 

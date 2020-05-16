@@ -2,6 +2,7 @@ type Day = {
   day: string;
   calories: number;
   wastedCalories: number;
+  color: string;
 }
 
 type Report = {

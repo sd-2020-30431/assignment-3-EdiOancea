@@ -5,7 +5,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import { CssBaseline } from '@material-ui/core';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 
 import ProtectedRoute from '../ProtectedRoute';
@@ -33,14 +33,20 @@ export const GlobalContext = React.createContext<{
 });
 
 const App: React.FC<{}> = () => {
+  const history = useHistory();
   const [user, setUser] = useState<User>(null);
   const [items, setItems] = useState<GroceryListItem[]>([]);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
     if (token && !user) {
-      APIRequests.request('GET', '/users/me').then(res => {
-        const { groceryListItems, ...rest } = res;
+      APIRequests.request('GET', '/users/me').then(user => {
+        const { error, groceryListItems, ...rest } = user || {};
+        if (error || user === null) {
+          setToken('');
+          return history.push('/signin');
+        }
+
         setUser(rest);
         setItems(groceryListItems);
       });

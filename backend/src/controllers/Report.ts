@@ -2,10 +2,10 @@ import { Request, Response, Router } from 'express';
 
 class ReportController {
   public router: Router;
-  private reportService;
+  private Mediator;
 
-  constructor(reportService, router: Router) {
-    this.reportService = reportService;
+  constructor(Mediator, router: Router) {
+    this.Mediator = Mediator;
     this.router = router;
     this.initRoutes();
   }
@@ -20,14 +20,14 @@ class ReportController {
     // @ts-ignore
     const { userId } = req;
 
-    res.json(await this.reportService.weeklyReport(userId));
+    res.json(await this.Mediator.handle('weeklyReport', userId));
   }
 
   private monthlyReport = async (req: Request, res: Response) => {
     // @ts-ignore
     const { userId } = req;
 
-    res.json(await this.reportService.monthlyReport(userId));
+    res.json(await this.Mediator.handle('monthlyReport', userId));
   }
 }
 
