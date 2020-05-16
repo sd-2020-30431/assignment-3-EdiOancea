@@ -2,6 +2,44 @@ import * as dayjs from 'dayjs'
 
 import { DayType, AbstractReport, AbstractReportFactory } from '../interfaces/Report';
 
+class ReportItem {
+  public day: string;
+  public calories: number;
+  public wastedCalories: number;
+
+  constructor(day: string, calories: number, wastedCalories: number) {
+    this.day = day;
+    this.calories = calories;
+    this.wastedCalories = wastedCalories;
+  }
+}
+
+class RedReportItem {
+  private _instance: ReportItem;
+
+  constructor(item: ReportItem) {
+    this._instance = item;
+  }
+
+  get day() { return this._instance.day; }
+  get calories() { return this._instance.calories; }
+  get wastedCalories() { return this._instance.wastedCalories }
+  get color() { return '#FF0000'; }
+}
+
+class GreenReportItem {
+  private _instance: ReportItem;
+
+  constructor(item: ReportItem) {
+    this._instance = item;
+  }
+
+  get day() { return this._instance.day; }
+  get calories() { return this._instance.calories; }
+  get wastedCalories() { return this._instance.wastedCalories }
+  get color() { return '#00FF00'; }
+}
+
 class Report implements AbstractReport {
   public days: DayType[];
   protected startOfPeriod;
@@ -10,7 +48,15 @@ class Report implements AbstractReport {
   constructor(items, type: 'week' | 'month') {
     this.startOfPeriod = dayjs().startOf(type).add(3, 'hour');
     this.endOfPeriod = dayjs().endOf(type).add(3, 'hour');
-    this.days = items.reduce(this.handleItem, this.generateTemplate());
+    this.days = items
+      .reduce(this.handleItem, this.generateTemplate())
+      .map(item => item.wastedCalories ? new RedReportItem(item) : new GreenReportItem(item))
+      .map(coloredItem => ({
+        day: coloredItem.day,
+        calories: coloredItem.calories,
+        wastedCalories: coloredItem.wastedCalories,
+        color: coloredItem.color,
+      }));
   }
 
   protected generateTemplate = (): DayType[] => {

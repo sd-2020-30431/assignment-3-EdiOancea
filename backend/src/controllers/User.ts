@@ -2,28 +2,32 @@ import { Request, Response, Router } from 'express';
 
 class UserController {
   public router: Router;
-  protected path = '/users';
-  protected pathMe = '/users/me';
-  protected userService;
+  private path = '/users';
+  private pathMe = '/users/me';
+  private Mediator;
 
-  constructor(userService, router: Router) {
-    this.userService = userService;
+  constructor(Mediator, router: Router) {
+    this.Mediator = Mediator;
     this.router = router;
     this.initRoutes();
   }
 
-  protected initRoutes() {
+  private initRoutes() {
     this.router
       .post(this.path, this.create)
       .get(this.pathMe, this.getMe);
   }
 
-  protected create = async (req: Request, res: Response) => {
-    res.json(await this.userService.create(req.body));
+  private create = async (req: Request, res: Response) => {
+    const { body: { email, password } } = req;
+
+    res.json(await this.Mediator.handle('createUser', { email, password }));
   }
-  protected getMe = async (req: Request, res: Response) => {
+  private getMe = async (req: Request, res: Response) => {
     // @ts-ignore
-    res.json(await this.userService.getMe(req.userId));
+    const { userId } = req;
+
+    res.json(await this.Mediator.handle('getMe', userId));
   }
 }
 

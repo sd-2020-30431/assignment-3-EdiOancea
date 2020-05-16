@@ -2,12 +2,12 @@ import { Request, Response, Router } from 'express';
 
 class AuthController {
   public router: Router;
-  protected path = '/auth';
-  protected authService;
+  private path = '/auth';
+  private mediator;
 
-  constructor(authService, router: Router) {
-    this.authService = authService;
+  constructor(mediator, router: Router) {
     this.router = router;
+    this.mediator = mediator;
     this.initRoutes();
   }
 
@@ -18,7 +18,7 @@ class AuthController {
   protected auth = async (req: Request, res: Response) => {
     const { body } = req;
 
-    res.json(await this.authService.auth(body));
+    res.json(await this.mediator.handle('signIn', body));
   }
 }
 
